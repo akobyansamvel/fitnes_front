@@ -1,13 +1,10 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-
-type RootStackParamList = {
-  GoalsScreen: undefined;
-};
+import { RootStackParamList } from './navigationTypes';
 
 type Props = {
-  navigation: NavigationProp<RootStackParamList>;
+  navigation: NavigationProp<RootStackParamList, 'Regist'>;
 };
 
 const RegistPage = ({ navigation }: Props) => {
@@ -23,15 +20,24 @@ const RegistPage = ({ navigation }: Props) => {
       <Text style={styles.additionalText}>Выберите пол</Text>
 
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('GoalsScreen')}>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('GoalsScreen')}
+        >
           <Text style={styles.buttonText}>Женский</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('GoalsScreen')}>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('GoalsScreen')}
+        >
           <Text style={styles.buttonText}>Мужской</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('GoalsScreen')}>
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('GoalsScreen')}
+        >
           <Text style={styles.buttonText}>Небинарный</Text>
         </TouchableOpacity>
       </View>

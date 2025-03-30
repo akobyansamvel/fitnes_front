@@ -1,47 +1,40 @@
-import CheckBox from '@react-native-community/checkbox';
-import { NavigationProp } from '@react-navigation/native';
+import { Checkbox } from 'expo-checkbox';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { RootStackParamList } from './navigationTypes';
 
-type RootStackParamList = {
-  NextScreen: undefined;
-};
+type BodyAreasRouteProp = RouteProp<RootStackParamList, 'BodyAreas'>;
+type BodyAreasNavigationProp = StackNavigationProp<RootStackParamList, 'BodyAreas'>;
 
 type Props = {
-  navigation: NavigationProp<RootStackParamList>;
+  navigation: BodyAreasNavigationProp;
+  route: BodyAreasRouteProp;
 };
 
-const BodyAreasScreen = ({ navigation }: Props) => {
+const BodyAreasScreen = ({ navigation, route }: Props) => {
+  const { selectedGoals } = route.params;
   const [primaryArea, setPrimaryArea] = useState<string | null>(null);
   const [secondaryAreas, setSecondaryAreas] = useState<string[]>([]);
 
   const bodyAreas = [
-    "Руки",
-    "Ноги",
-    "Спина",
-    "Грудь",
-    "Плечи",
-    "Пресс",
-    "Ягодицы"
+    "Руки", "Ноги", "Спина", "Грудь", "Плечи", "Пресс", "Ягодицы"
   ];
 
   const togglePrimaryArea = (area: string) => {
-    if (primaryArea === area) {
-      setPrimaryArea(null);
-    } else {
-      setPrimaryArea(area);
-      setSecondaryAreas([]);
-    }
+    setPrimaryArea(prev => prev === area ? null : area);
+    setSecondaryAreas([]);
   };
 
   const toggleSecondaryArea = (area: string) => {
     if (primaryArea) return;
     
-    if (secondaryAreas.includes(area)) {
-      setSecondaryAreas(secondaryAreas.filter(item => item !== area));
-    } else {
-      setSecondaryAreas([...secondaryAreas, area]);
-    }
+    setSecondaryAreas(prev => 
+      prev.includes(area) 
+        ? prev.filter(item => item !== area) 
+        : [...prev, area]
+    );
   };
 
   const isAreaSelected = (area: string) => {
@@ -59,41 +52,40 @@ const BodyAreasScreen = ({ navigation }: Props) => {
       <Text style={styles.title}>Какие области тела хотите проработать?</Text>
       <Text style={styles.subtitle}>
         {primaryArea 
-          ? "Вы выбрали основную зону. Можно выбрать только одну основную зону."
-          : "Выберите основную зону или несколько второстепенных"}
+          ? `Основная зона: ${primaryArea}`
+          : secondaryAreas.length > 0 
+            ? `Выбрано зон: ${secondaryAreas.length}`
+            : "Выберите зоны для работы"}
       </Text>
 
-      <View style={styles.contentContainer}>
-        {/* <Image
-          source={require('../assets/body-image.png')}
-          style={styles.bodyImage}
-          resizeMode="contain"
-        /> */}
-
-        <View style={styles.checkboxColumn}>
-          {bodyAreas.map((area, index) => (
-            <View key={index} style={styles.checkboxWrapper}>
-              <CheckBox
-                value={isAreaSelected(area)}
-                onValueChange={() => 
-                  primaryArea 
-                    ? togglePrimaryArea(area) 
-                    : toggleSecondaryArea(area)
-                }
-                tintColors={{ true: '#007AFF', false: '#767577' }}
-              />
-              <Text style={styles.checkboxLabel}>{area}</Text>
-            </View>
-          ))}
-        </View>
+      <View style={styles.checkboxContainer}>
+        {bodyAreas.map((area, index) => (
+          <View key={index} style={styles.checkboxWrapper}>
+            <Checkbox
+              value={isAreaSelected(area)}
+              onValueChange={() => 
+                primaryArea 
+                  ? togglePrimaryArea(area)
+                  : toggleSecondaryArea(area)
+              }
+              color={isAreaSelected(area) ? '#007AFF' : undefined}
+              style={styles.checkbox}
+              disabled={!!primaryArea && !isAreaSelected(area)}
+            />
+            <Text style={styles.checkboxLabel}>{area}</Text>
+          </View>
+        ))}
       </View>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         style={[
-          styles.button, 
+          styles.button,
           (!primaryArea && secondaryAreas.length === 0) && styles.disabledButton
         ]}
-        onPress={() => navigation.navigate('NextScreen')}
+        onPress={() => {
+          // Здесь будет переход на следующий экран
+          // с передачей всех данных
+        }}
         disabled={!primaryArea && secondaryAreas.length === 0}
       >
         <Text style={styles.buttonText}>Продолжить</Text>
@@ -101,8 +93,6 @@ const BodyAreasScreen = ({ navigation }: Props) => {
     </View>
   );
 };
-
-// Стили остаются такими же как в предыдущем примере
 
 const styles = StyleSheet.create({
   container: {
@@ -139,18 +129,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: 'center',
   },
-  contentContainer: {
-    flexDirection: 'row',
-    flex: 1,
-    marginBottom: 20,
-  },
-  bodyImage: {
-    width: '50%',
-    height: 300,
-  },
-  checkboxColumn: {
-    width: '50%',
-    paddingLeft: 15,
+  checkboxContainer: {
+    marginBottom: 30,
   },
   checkboxWrapper: {
     flexDirection: 'row',
@@ -158,16 +138,23 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   checkbox: {
-    marginRight: 10,
+    marginRight: 8,
+    width: 24,
+    height: 24,
   },
   checkboxLabel: {
     fontSize: 16,
+    marginLeft: 8,
+  },
+  disabledText: {
+    color: '#AAA',
   },
   button: {
     backgroundColor: '#007AFF',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 'auto',
   },
   disabledButton: {
     backgroundColor: '#B3E0FF',

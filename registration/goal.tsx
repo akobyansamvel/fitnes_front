@@ -1,14 +1,13 @@
-import CheckBox from '@react-native-community/checkbox';
-import { NavigationProp } from '@react-navigation/native';
+import { Checkbox } from 'expo-checkbox';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { RootStackParamList } from './navigationTypes';
 
-type RootStackParamList = {
-  BodyAreas: undefined;
-};
+type GoalsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'GoalsScreen'>;
 
 type Props = {
-  navigation: NavigationProp<RootStackParamList>;
+  navigation: GoalsScreenNavigationProp;
 };
 
 const GoalsScreen = ({ navigation }: Props) => {
@@ -23,11 +22,15 @@ const GoalsScreen = ({ navigation }: Props) => {
   ];
 
   const toggleGoal = (goal: string) => {
-    if (selectedGoals.includes(goal)) {
-      setSelectedGoals(selectedGoals.filter(item => item !== goal));
-    } else {
-      setSelectedGoals([...selectedGoals, goal]);
-    }
+    setSelectedGoals(prev => 
+      prev.includes(goal) 
+        ? prev.filter(item => item !== goal) 
+        : [...prev, goal]
+    );
+  };
+
+  const handleContinue = () => {
+    navigation.navigate('BodyAreas', { selectedGoals });
   };
 
   return (
@@ -44,19 +47,23 @@ const GoalsScreen = ({ navigation }: Props) => {
       <View style={styles.checkboxContainer}>
         {goals.map((goal, index) => (
           <View key={index} style={styles.checkboxWrapper}>
-            <CheckBox
+            <Checkbox
               value={selectedGoals.includes(goal)}
               onValueChange={() => toggleGoal(goal)}
-              tintColors={{ true: '#007AFF', false: '#767577' }}
+              color={selectedGoals.includes(goal) ? '#007AFF' : undefined}
+              style={styles.checkbox}
             />
             <Text style={styles.checkboxLabel}>{goal}</Text>
           </View>
         ))}
       </View>
 
-      <TouchableOpacity 
-        style={[styles.button, selectedGoals.length === 0 && styles.disabledButton]}
-        onPress={() => navigation.navigate('BodyAreas')}
+      <TouchableOpacity
+        style={[
+          styles.button, 
+          selectedGoals.length === 0 && styles.disabledButton
+        ]}
+        onPress={handleContinue}
         disabled={selectedGoals.length === 0}
       >
         <Text style={styles.buttonText}>Продолжить</Text>
@@ -64,7 +71,6 @@ const GoalsScreen = ({ navigation }: Props) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -107,10 +113,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   checkbox: {
-    marginRight: 10,
+    marginRight: 8,
+    width: 24,
+    height: 24,
   },
   checkboxLabel: {
     fontSize: 16,
+    marginLeft: 8,
   },
   button: {
     backgroundColor: '#007AFF',
@@ -128,5 +137,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-console.log("GoalsScreen загружен");
+
 export default GoalsScreen;
