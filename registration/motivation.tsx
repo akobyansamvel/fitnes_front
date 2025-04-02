@@ -1,10 +1,21 @@
+// MotivationScreen.tsx
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
-import { useNavigation } from '@react-navigation/native';
+import { Checkbox } from 'expo-checkbox';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from './navigationTypes';
 
-const MotivationScreen = () => {
-  const navigation = useNavigation();
+type MotivationRouteProp = RouteProp<RootStackParamList, 'Motivation'>;
+type MotivationNavigationProp = StackNavigationProp<RootStackParamList, 'Motivation'>;
+
+type Props = {
+  navigation: MotivationNavigationProp;
+  route: MotivationRouteProp;
+};
+
+const MotivationScreen = ({ navigation, route }: Props) => {
   const [selectedMotivations, setSelectedMotivations] = useState<string[]>([]);
 
   const motivations = [
@@ -39,10 +50,11 @@ const MotivationScreen = () => {
       {/* Чекбоксы мотивации */}
       {motivations.map((motivation, index) => (
         <View key={index} style={styles.checkboxWrapper}>
-          <CheckBox
+          <Checkbox
             value={selectedMotivations.includes(motivation)}
             onValueChange={() => toggleMotivation(motivation)}
-            tintColors={{ true: '#007AFF', false: '#767577' }}
+            color={selectedMotivations.includes(motivation) ? '#007AFF' : undefined}
+            style={styles.checkbox}
           />
           <Text style={styles.checkboxLabel}>{motivation}</Text>
         </View>
@@ -52,9 +64,8 @@ const MotivationScreen = () => {
       <TouchableOpacity
         style={[
           styles.button,
-          selectedMotivations.length === 0 && styles.disabledButton
+          selectedMotivations.length === 0 && styles.disabledButton,
         ]}
-        // onPress={() => navigation.navigate('NextScreen')} // Замените на ваш следующий экран
         disabled={selectedMotivations.length === 0}
       >
         <Text style={styles.buttonText}>Продолжить</Text>
@@ -103,9 +114,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
   },
+  checkbox: {
+    marginRight: 8,
+    width: 24,
+    height: 24,
+  },
   checkboxLabel: {
     fontSize: 16,
-    marginLeft: 10,
+    marginLeft: 8,
     flex: 1,
   },
   button: {

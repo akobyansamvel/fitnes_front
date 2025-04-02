@@ -5,16 +5,13 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from './navigationTypes';
 
-type BodyAreasRouteProp = RouteProp<RootStackParamList, 'BodyAreas'>;
 type BodyAreasNavigationProp = StackNavigationProp<RootStackParamList, 'BodyAreas'>;
 
 type Props = {
   navigation: BodyAreasNavigationProp;
-  route: BodyAreasRouteProp;
 };
 
-const BodyAreasScreen = ({ navigation, route }: Props) => {
-  const { selectedGoals } = route.params;
+const BodyAreasScreen = ({ navigation }: Props) => {
   const [primaryArea, setPrimaryArea] = useState<string | null>(null);
   const [secondaryAreas, setSecondaryAreas] = useState<string[]>([]);
 
@@ -35,6 +32,12 @@ const BodyAreasScreen = ({ navigation, route }: Props) => {
         ? prev.filter(item => item !== area) 
         : [...prev, area]
     );
+  };
+
+  const handleContinue = () => {
+    navigation.navigate('Motivation', { 
+      selectedGoals: primaryArea ? [primaryArea] : secondaryAreas 
+    });
   };
 
   const isAreaSelected = (area: string) => {
@@ -78,14 +81,8 @@ const BodyAreasScreen = ({ navigation, route }: Props) => {
       </View>
 
       <TouchableOpacity
-        style={[
-          styles.button,
-          (!primaryArea && secondaryAreas.length === 0) && styles.disabledButton
-        ]}
-        onPress={() => {
-          // Здесь будет переход на следующий экран
-          // с передачей всех данных
-        }}
+        style={[styles.button, (!primaryArea && secondaryAreas.length === 0) && styles.disabledButton]}
+        onPress={handleContinue}
         disabled={!primaryArea && secondaryAreas.length === 0}
       >
         <Text style={styles.buttonText}>Продолжить</Text>
