@@ -63,7 +63,10 @@ const BodyAreasScreen = ({ navigation }: Props) => {
 
       <View style={styles.checkboxContainer}>
         {bodyAreas.map((area, index) => (
-          <View key={index} style={styles.checkboxWrapper}>
+          <View key={index} style={[
+            styles.checkboxWrapper,
+            isAreaSelected(area) && { backgroundColor: '#87D0B2' }
+          ]}>
             <Checkbox
               value={isAreaSelected(area)}
               onValueChange={() => 
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#ECE9E4',
   },
   progressContainer: {
     flexDirection: 'row',
@@ -133,6 +136,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    padding: 12,
   },
   checkbox: {
     marginRight: 8,
@@ -147,14 +154,15 @@ const styles = StyleSheet.create({
     color: '#AAA',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#4D4D4D',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 'auto',
   },
   disabledButton: {
-    backgroundColor: '#B3E0FF',
+    backgroundColor: '#4D4D4D',
+    opacity: 0.5,
   },
   buttonText: {
     color: '#fff',

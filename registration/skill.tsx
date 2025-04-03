@@ -27,13 +27,11 @@ const SkillScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Skill</Text>
-      
-      {/* Прогресс-бар из 3 полосок */}
+      {/* Индикатор прогресса (3 полоски, активна третья) */}
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, styles.activeProgressBar]} />
-        <View style={[styles.progressBar, styles.inactiveProgressBar]} />
-        <View style={[styles.progressBar, styles.inactiveProgressBar]} />
+        <View style={[styles.progressBar, styles.completedProgressBar]} />
+        <View style={[styles.progressBar, styles.completedProgressBar]} />
       </View>
       
       <Text style={styles.questionText}>Вы уже когда-нибудь 
@@ -44,7 +42,10 @@ const SkillScreen = () => {
         {options.map((option) => (
           <TouchableOpacity
             key={option.id}
-            style={styles.optionContainer}
+            style={[
+              styles.optionContainer,
+              selectedOption === option.id && styles.selectedOptionContainer
+            ]}
             onPress={() => setSelectedOption(option.id)}
           >
             <Checkbox
@@ -89,22 +90,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 20,
   },
-  progressContainer: {
+progressContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
     marginBottom: 30,
   },
   progressBar: {
+    flex: 1,
     height: 4,
-    width: 60,
-    marginHorizontal: 5,
+    backgroundColor: '#E0E0E0',
+    marginHorizontal: 2,
     borderRadius: 2,
   },
   activeProgressBar: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#007AFF',
   },
-  inactiveProgressBar: {
-    backgroundColor: '#E0E0E0',
+  completedProgressBar: {
+    backgroundColor: '#4CAF50', 
   },
   questionText: {
     fontSize: 18,
@@ -133,6 +134,10 @@ const styles = StyleSheet.create({
   selectedOptionText: {
     color: '#2E7D32',
     fontWeight: '500',
+  },
+  selectedOptionContainer: {
+    backgroundColor: '#87D0B2',
+    borderColor: '#87D0B2',
   },
   continueButton: {
     backgroundColor: '#4CAF50',

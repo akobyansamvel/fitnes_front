@@ -20,14 +20,12 @@ const InfoScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Информация</Text>
-      
+    <View style={styles.container}>      
       {/* Прогресс-бар (1/3) */}
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, styles.completedProgressBar]} />
-        <View style={[styles.progressBar, styles.inactiveProgressBar]} />
-        <View style={[styles.progressBar, styles.inactiveProgressBar]} />
+        <View style={[styles.progressBar, styles.completedProgressBar]} />
+        <View style={[styles.progressBar, styles.activeProgressBar]} />
       </View>
       
       <View style={styles.formContainer}>
@@ -97,7 +95,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#ECE9E4',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
@@ -108,23 +107,28 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: 20,
   },
   progressBar: {
+    flex: 1,
     height: 4,
-    width: 60,
-    marginHorizontal: 5,
+    backgroundColor: '#E0E0E0',
+    marginHorizontal: 2,
     borderRadius: 2,
   },
-  completedProgressBar: {
+  activeProgressBar: {
     backgroundColor: '#4CAF50',
   },
-  inactiveProgressBar: {
-    backgroundColor: '#E0E0E0',
+  completedProgressBar: {
+    backgroundColor: '#ACACAC', 
   },
   formContainer: {
-    marginBottom: 20,
+    marginBottom: 40,
   },
   inputContainer: {
     marginBottom: 25,
@@ -144,13 +148,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
   },
   continueButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#4D4D4D',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 20,
   },
   disabledContinueButton: {
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#4D4D4D',
   },
   continueButtonText: {
     color: '#fff',

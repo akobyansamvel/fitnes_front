@@ -14,11 +14,11 @@ const GoalsScreen = ({ navigation }: Props) => {
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
 
   const goals = [
-    "Похудение",
-    "Набор мышечной массы",
-    "Поддержание формы",
-    "Улучшение выносливости",
-    "Реабилитация после травм"
+    "Изучение основы йоги",
+    "Снижение стресса",
+    "Увеличение силы",
+    "Снижение веса",
+    "Улучшение гибкости"
   ];
 
   const toggleGoal = (goal: string) => {
@@ -41,16 +41,19 @@ const GoalsScreen = ({ navigation }: Props) => {
         <View style={styles.progressBar} />
       </View>
 
-      <Text style={styles.title}>Какие у вас цели?</Text>
+      <Text style={styles.title}> Какие цели вы хотите достичь? </Text>
       <Text style={styles.subtitle}>Выберите одну или несколько целей</Text>
 
       <View style={styles.checkboxContainer}>
         {goals.map((goal, index) => (
-          <View key={index} style={styles.checkboxWrapper}>
+          <View key={index} style={[
+            styles.checkboxWrapper,
+            selectedGoals.includes(goal) && styles.selectedWrapper
+          ]}>
             <Checkbox
               value={selectedGoals.includes(goal)}
               onValueChange={() => toggleGoal(goal)}
-              color={selectedGoals.includes(goal) ? '#007AFF' : undefined}
+              color={selectedGoals.includes(goal) ? '#4CAF50' : undefined}
               style={styles.checkbox}
             />
             <Text style={styles.checkboxLabel}>{goal}</Text>
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#ECE9E4',
   },
   progressContainer: {
     flexDirection: 'row',
@@ -111,6 +114,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    padding: 12,
+  },
+  selectedWrapper: {
+    backgroundColor: '#87D0B2',
   },
   checkbox: {
     marginRight: 8,
@@ -122,14 +132,14 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#4D4D4D',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 'auto',
   },
   disabledButton: {
-    backgroundColor: '#B3E0FF',
+    backgroundColor: '#4D4D4D',
   },
   buttonText: {
     color: '#fff',

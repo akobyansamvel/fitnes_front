@@ -42,16 +42,15 @@ const RestrictionsScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ограничения</Text>
-      
+    <View style={styles.container}>      
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, styles.completedProgressBar]} />
+        <View style={[styles.progressBar, styles.activeProgressBar]} />
         <View style={[styles.progressBar, styles.completedProgressBar]} />
-        <View style={[styles.progressBar, styles.inactiveProgressBar]} />
       </View>
       
-      <Text style={styles.questionText}>Есть ли у вас какие-либо ограничения для занятий?</Text>
+      <Text style={styles.questionText}>У вас есть физические 
+      ограничения?</Text>
       
       <View style={styles.optionsContainer}>
         {options.map((option) => (
@@ -92,7 +91,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#ECE9E4',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 24,
@@ -102,27 +102,31 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30,
+    marginBottom: 5,
   },
   progressBar: {
-    height: 4,
     flex: 1,
+    height: 4,
+    backgroundColor: '#E0E0E0',
     marginHorizontal: 2,
+    borderRadius: 2,
   },
-  completedProgressBar: {
+  activeProgressBar: {
     backgroundColor: '#4CAF50',
   },
-  inactiveProgressBar: {
-    backgroundColor: '#E0E0E0',
+  completedProgressBar: {
+    backgroundColor: '#ACACAC', 
   },
   questionText: {
-    fontSize: 18,
-    marginBottom: 20,
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 30,
     textAlign: 'center',
   },
   optionsContainer: {
-    marginBottom: 30,
+    flex: 1,
+    justifyContent: 'center',
+    marginBottom: 20,
   },
   optionButton: {
     flexDirection: 'row',
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   selectedOptionButton: {
-    backgroundColor: '#E8F5E9',
+    backgroundColor: '#87D0B2',
   },
   optionText: {
     flex: 1,
@@ -141,13 +145,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   continueButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#4D4D4D',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginBottom: 20,
   },
   disabledContinueButton: {
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#4D4D4D',
   },
   continueButtonText: {
     color: '#fff',

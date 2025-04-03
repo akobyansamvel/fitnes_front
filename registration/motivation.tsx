@@ -19,12 +19,12 @@ const MotivationScreen = ({ navigation, route }: Props) => {
   const [selectedMotivations, setSelectedMotivations] = useState<string[]>([]);
 
   const motivations = [
-    "Хочу улучшить здоровье",
-    "Хочу лучше выглядеть",
-    "Хочу повысить уверенность в себе",
-    "Хочу больше энергии",
-    "Хочу справиться со стрессом",
-    "Хочу пример для близких"
+    "Оставаться здоровым",
+    "Иметь лучшую гибкость",
+    "Снижать уровень стресса",
+    "Внутреннее спокойствие",
+    "Развивать силу",
+    "Изучать новые техники"
   ];
 
   const toggleMotivation = (motivation: string) => {
@@ -49,7 +49,13 @@ const MotivationScreen = ({ navigation, route }: Props) => {
 
       {/* Чекбоксы мотивации */}
       {motivations.map((motivation, index) => (
-        <View key={index} style={styles.checkboxWrapper}>
+        <View 
+          key={index} 
+          style={[
+            styles.checkboxWrapper,
+            selectedMotivations.includes(motivation) && { backgroundColor: '#87D0B2' }
+          ]}
+        >
           <Checkbox
             value={selectedMotivations.includes(motivation)}
             onValueChange={() => toggleMotivation(motivation)}
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#ECE9E4',
   },
   progressContainer: {
     flexDirection: 'row',
@@ -114,6 +120,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 15,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#D0D0D0',
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
   },
   checkbox: {
     marginRight: 8,
@@ -126,14 +137,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#4D4D4D',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 20,
   },
   disabledButton: {
-    backgroundColor: '#B3E0FF',
+    backgroundColor: '#4D4D4D',
   },
   buttonText: {
     color: '#fff',
