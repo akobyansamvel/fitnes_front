@@ -1,5 +1,6 @@
 export type RootStackParamList = {
   Regist: undefined;
+  Info: undefined;
   GoalsScreen: undefined;
   BodyAreas: undefined;
   Motivation: undefined;
@@ -9,5 +10,5 @@ export type RootStackParamList = {
   Endurance: undefined;
   Breath: undefined;
   Restrictions: undefined;
-  Info: undefined;
+
 }; 

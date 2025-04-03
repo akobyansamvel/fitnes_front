@@ -1,132 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './navigationTypes';
-import Svg, { Circle, Line, Rect } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
 type InfoScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Info'>;
 
-interface CustomSliderProps {
-  value: number;
-  onValueChange: (value: number) => void;
-  min: number;
-  max: number;
-  style?: any;
-}
-
-const CustomSlider = ({ value, onValueChange, min, max, style }: CustomSliderProps) => {
-  const width = Dimensions.get('window').width * 0.8;
-  const position = ((value - min) / (max - min)) * width;
-
-  return (
-    <View style={[styles.sliderContainer, style]}>
-      <View style={styles.sliderTrack}>
-        <View style={[styles.sliderProgress, { width: position }]} />
-      </View>
-      <TouchableOpacity
-        style={[styles.sliderThumb, { left: position - 10 }]}
-        onPressIn={() => {}}
-      />
-    </View>
-  );
-};
-
 const InfoScreen = () => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
-  const [height, setHeight] = useState(170);
-  const [weight, setWeight] = useState(60);
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
   const navigation = useNavigation<InfoScreenNavigationProp>();
 
   const handleContinue = () => {
-    navigation.navigate('NextScreen');
-  };
-
-  // Весы для визуализации веса
-  const renderWeightScale = () => {
-    const scaleWidth = Dimensions.get('window').width * 0.8;
-    const pointerPosition = (weight / 150) * scaleWidth;
-    
-    return (
-      <View style={styles.scaleContainer}>
-        <Svg height="60" width={scaleWidth + 40}>
-          <Line
-            x1="20" y1="30"
-            x2={scaleWidth + 20} y2="30"
-            stroke="#4CAF50"
-            strokeWidth="3"
-          />
-          <Rect
-            x={pointerPosition}
-            y="10"
-            width="4"
-            height="40"
-            fill="#FF5722"
-          />
-          <Circle
-            cx={pointerPosition + 2}
-            cy="10"
-            r="8"
-            fill="#FF5722"
-          />
-        </Svg>
-        <Text style={styles.scaleValue}>{weight} кг</Text>
-      </View>
-    );
-  };
-
-  // Индикатор роста в виде человека
-  const renderHeightIndicator = () => {
-    const personHeight = (height / 220) * 150;
-    
-    return (
-      <View style={styles.heightContainer}>
-        <Svg height="160" width="100">
-          {/* Голова */}
-          <Circle cx="50" cy={160 - personHeight + 15} r="15" fill="#FFD700" />
-          {/* Тело */}
-          <Line
-            x1="50" y1={160 - personHeight + 30}
-            x2="50" y2={160 - personHeight + 80}
-            stroke="#FFD700"
-            strokeWidth="4"
-          />
-          {/* Руки */}
-          <Line
-            x1="20" y1={160 - personHeight + 50}
-            x2="80" y2={160 - personHeight + 50}
-            stroke="#FFD700"
-            strokeWidth="4"
-          />
-          {/* Ноги */}
-          <Line
-            x1="50" y1={160 - personHeight + 80}
-            x2="30" y2={160}
-            stroke="#FFD700"
-            strokeWidth="4"
-          />
-          <Line
-            x1="50" y1={160 - personHeight + 80}
-            x2="70" y2={160}
-            stroke="#FFD700"
-            strokeWidth="4"
-          />
-        </Svg>
-        <Text style={styles.scaleValue}>{height} см</Text>
-      </View>
-    );
+    if (name && age && height && weight) {
+      navigation.navigate('GoalsScreen');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Информация</Text>
       
-      {/* Прогресс-бар (3/3) */}
+      {/* Прогресс-бар (1/3) */}
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, styles.completedProgressBar]} />
-        <View style={[styles.progressBar, styles.completedProgressBar]} />
-        <View style={[styles.progressBar, styles.completedProgressBar]} />
+        <View style={[styles.progressBar, styles.inactiveProgressBar]} />
+        <View style={[styles.progressBar, styles.inactiveProgressBar]} />
       </View>
       
       <View style={styles.formContainer}>
@@ -153,36 +54,38 @@ const InfoScreen = () => {
           />
         </View>
         
-        {/* Рост с индикатором */}
+        {/* Рост */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Рост</Text>
-          {renderHeightIndicator()}
-          <CustomSlider
+          <Text style={styles.label}>Рост (см)</Text>
+          <TextInput
+            style={styles.input}
             value={height}
-            onValueChange={setHeight}
-            min={120}
-            max={220}
-            style={styles.slider}
+            onChangeText={setHeight}
+            keyboardType="numeric"
+            placeholder="Введите ваш рост"
           />
         </View>
         
-        {/* Вес с весами */}
+        {/* Вес */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Вес</Text>
-          {renderWeightScale()}
-          <CustomSlider
+          <Text style={styles.label}>Вес (кг)</Text>
+          <TextInput
+            style={styles.input}
             value={weight}
-            onValueChange={setWeight}
-            min={30}
-            max={150}
-            style={styles.slider}
+            onChangeText={setWeight}
+            keyboardType="numeric"
+            placeholder="Введите ваш вес"
           />
         </View>
       </View>
       
       <TouchableOpacity
-        style={styles.continueButton}
+        style={[
+          styles.continueButton,
+          (!name || !age || !height || !weight) && styles.disabledContinueButton
+        ]}
         onPress={handleContinue}
+        disabled={!name || !age || !height || !weight}
       >
         <Text style={styles.continueButtonText}>Продолжить</Text>
       </TouchableOpacity>
@@ -240,56 +143,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#FAFAFA',
   },
-  slider: {
-    width: '100%',
-    height: 40,
-  },
-  sliderContainer: {
-    width: '100%',
-    height: 40,
-    justifyContent: 'center',
-  },
-  sliderTrack: {
-    height: 4,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 2,
-  },
-  sliderProgress: {
-    height: '100%',
-    backgroundColor: '#4CAF50',
-    borderRadius: 2,
-  },
-  sliderThumb: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#FF5722',
-    position: 'absolute',
-    top: -8,
-  },
-  scaleContainer: {
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  heightContainer: {
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  scaleValue: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#4CAF50',
-    marginTop: 5,
-  },
   continueButton: {
     backgroundColor: '#4CAF50',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
+  },
+  disabledContinueButton: {
+    backgroundColor: '#E0E0E0',
   },
   continueButtonText: {
-    color: 'white',
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
