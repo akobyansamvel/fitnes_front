@@ -1,8 +1,8 @@
 export type RootStackParamList = {
   Regist: undefined;
   GoalsScreen: undefined;
-  BodyAreas: { selectedGoals: string[] };
-  Motivation: { selectedGoals: string[] };
+  BodyAreas: undefined;
+  Motivation: undefined;
   Loading: undefined;
   Skill: undefined;
   Flexibility: undefined;
@@ -10,6 +10,4 @@ export type RootStackParamList = {
   Breath: undefined;
   Restrictions: undefined;
   Info: undefined;
-  NextScreen: undefined;
-  // Добавьте другие экраны по мере необходимости
-};
+}; 

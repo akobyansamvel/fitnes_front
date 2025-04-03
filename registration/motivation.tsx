@@ -67,6 +67,7 @@ const MotivationScreen = ({ navigation, route }: Props) => {
           selectedMotivations.length === 0 && styles.disabledButton,
         ]}
         disabled={selectedMotivations.length === 0}
+        onPress={() => navigation.navigate('Loading')}
       >
         <Text style={styles.buttonText}>Продолжить</Text>
       </TouchableOpacity>
