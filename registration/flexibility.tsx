@@ -96,7 +96,8 @@ const FlexibilityScreen = () => {
         <View style={[styles.progressBar, styles.completedProgressBar]} />
       </View>
       
-      <Text style={styles.questionText}>Оцените свою гибкость:</Text>
+      <Text style={styles.questionText}>Как вы оцениваете 
+      свою гибкость?</Text>
       
       <View style={styles.optionsContainer}>
         {options.map((option) => (
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flexDirection: 'row',
-    marginBottom: 30,
+    marginBottom: 60,
   },
   progressBar: {
     flex: 1,
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   completedProgressBar: {
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#ACACAC',
   },
   activeProgressBar: {
     backgroundColor: '#4CAF50',

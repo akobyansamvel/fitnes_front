@@ -3,13 +3,13 @@ import { View, Text, Image, StyleSheet, Animated, Easing, ActivityIndicator } fr
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './navigationTypes';
 
-type LoadingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'GoalFormation'>;
+type GoalFormationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'GoalFormation'>;
 
 type Props = {
-  navigation: LoadingScreenNavigationProp;
+  navigation: GoalFormationScreenNavigationProp;
 };
 
-const LoadingScreen = ({ navigation }: Props) => {
+const GoalFormationScreen = ({ navigation }: Props) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -37,11 +37,11 @@ const LoadingScreen = ({ navigation }: Props) => {
     }
   }, [imageLoaded, scaleAnim]);
 
-  // Автоматический переход на Skill через 2.5 секунды
+  // Автоматический переход на страницу уведомлений через 2.5 секунды
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      navigation.navigate('Skill');
+      navigation.navigate('Notification');
     }, 2500);
 
     return () => clearTimeout(timer);
@@ -49,7 +49,7 @@ const LoadingScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Формируем цель</Text>
+      <Text style={styles.text}>Подбираем индивидуальную программу для вас</Text>
       
       <View style={styles.imageContainer}>
         <Animated.Image
@@ -70,8 +70,7 @@ const LoadingScreen = ({ navigation }: Props) => {
         )}
       </View>
       
-      <Text style={styles.text_subtitle}>Большие результаты начинаются 
-      с маленьких целей</Text>
+      <Text style={styles.text_subtitle}>Стать лучшей версией себя</Text>
       
       {isLoading && (
         <View style={styles.loadingIndicator}>
@@ -125,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoadingScreen;
+export default GoalFormationScreen;

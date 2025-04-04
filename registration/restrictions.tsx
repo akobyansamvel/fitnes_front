@@ -12,27 +12,37 @@ const RestrictionsScreen = () => {
   const navigation = useNavigation<RestrictionsScreenNavigationProp>();
 
   const options = [
-    { id: 1, text: "Травмы коленей" },
-    { id: 2, text: "Проблемы с позвоночником" },
-    { id: 3, text: "Травмы плеч" },
-    { id: 4, text: "Травмы запястий" },
-    { id: 5, text: "Гипертония" },
-    { id: 6, text: "Нет ограничений" }
+    { id: 1, text: "Нет ограничений" },
+    { id: 2, text: "Боли в спине" },
+    { id: 3, text: "Проблемы с коленями" },
+    { id: 4, text: "Чувствительность в суставах" },
+    { id: 5, text: "Беременность " },
+    { id: 6, text: "Послеродовое состояние" }
   ];
 
   const handleOptionToggle = (id: number) => {
-    if (id === 6) {
-      // Если выбрано "Нет ограничений", снимаем все остальные выборы
-      setSelectedOptions([6]);
+    if (id === 1) { // "Нет ограничений"
+      if (selectedOptions.includes(1)) {
+        setSelectedOptions([]);
+      } else {
+        setSelectedOptions([1]);
+      }
     } else {
-      // Если выбрано что-то другое, убираем "Нет ограничений" из выбора
-      setSelectedOptions(prev => {
-        const filtered = prev.filter(option => option !== 6);
-        return prev.includes(id) 
-          ? filtered.filter(option => option !== id) 
-          : [...filtered, id];
-      });
+      if (selectedOptions.includes(1)) {
+        setSelectedOptions([id]);
+      } else {
+        setSelectedOptions(prev => 
+          prev.includes(id) ? prev.filter(option => option !== id) : [...prev, id]
+        );
+      }
     }
+  };
+
+  const isOptionDisabled = (id: number) => {
+    if (selectedOptions.includes(1)) {
+      return id !== 1;
+    }
+    return false;
   };
 
   const handleContinue = () => {
@@ -58,17 +68,22 @@ const RestrictionsScreen = () => {
             key={option.id}
             style={[
               styles.optionButton,
-              selectedOptions.includes(option.id) && styles.selectedOptionButton
+              selectedOptions.includes(option.id) && styles.selectedOptionButton,
+              isOptionDisabled(option.id) && styles.disabledOptionButton
             ]}
             onPress={() => handleOptionToggle(option.id)}
             activeOpacity={0.7}
+            disabled={isOptionDisabled(option.id)}
           >
+            <Text style={[
+              styles.optionText,
+              isOptionDisabled(option.id) && styles.disabledOptionText
+            ]}>{option.text}</Text>
             <Checkbox
               value={selectedOptions.includes(option.id)}
               onValueChange={() => handleOptionToggle(option.id)}
-              color={selectedOptions.includes(option.id) ? '#4CAF50' : undefined}
+              color={selectedOptions.includes(option.id) ? '#4CAF50' : '#519076'}
             />
-            <Text style={styles.optionText}>{option.text}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -120,8 +135,9 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 30,
     textAlign: 'center',
+    color: '#333',
+    marginTop: 40,
   },
   optionsContainer: {
     flex: 1,
@@ -131,6 +147,7 @@ const styles = StyleSheet.create({
   optionButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 15,
     marginBottom: 10,
     borderRadius: 8,
@@ -139,10 +156,15 @@ const styles = StyleSheet.create({
   selectedOptionButton: {
     backgroundColor: '#87D0B2',
   },
+  disabledOptionButton: {
+    backgroundColor: '#F5F5F5',
+    opacity: 0.5,
+  },
   optionText: {
-    flex: 1,
     fontSize: 16,
-    marginLeft: 10,
+  },
+  disabledOptionText: {
+    color: '#999',
   },
   continueButton: {
     backgroundColor: '#4D4D4D',

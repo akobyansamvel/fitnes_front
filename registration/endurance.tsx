@@ -76,12 +76,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
     textAlign: 'center',
+    color: '#333',
   },
   progressContainer: {
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 60,
   },
   progressBar: {
     flex: 1,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 24,
-    marginBottom: 15,
+  
     textAlign: 'center',
     fontWeight: 'bold',
   },

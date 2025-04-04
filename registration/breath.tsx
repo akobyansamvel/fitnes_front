@@ -71,15 +71,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECE9E4',
     justifyContent: 'space-between',
   },
+
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    color: '#333',
   },
   progressContainer: {
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 30,
   },
   progressBar: {
     flex: 1,
@@ -97,8 +99,8 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 10,
     textAlign: 'center',
+    marginTop: 40,
   },
   optionsContainer: {
     flex: 1,

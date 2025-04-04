@@ -1,22 +1,61 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './navigationTypes';
 import { useNavigation } from '@react-navigation/native';
+import Slider from '@react-native-community/slider';
 
 type InfoScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Info'>;
 
 const InfoScreen = () => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('170');
+  const [weight, setWeight] = useState('70');
+  const [bmi, setBmi] = useState<number | null>(null);
+  const [displayHeight, setDisplayHeight] = useState('170');
+  const [displayWeight, setDisplayWeight] = useState('70');
   const navigation = useNavigation<InfoScreenNavigationProp>();
+
+  useEffect(() => {
+    if (height && weight) {
+      const heightInMeters = Number(height) / 100;
+      const weightInKg = Number(weight);
+      const bmiValue = weightInKg / (heightInMeters * heightInMeters);
+      setBmi(Number(bmiValue.toFixed(1)));
+    }
+  }, [height, weight]);
+
+  const validateAge = (ageValue: string) => {
+    const ageNum = Number(ageValue);
+    if (ageNum > 100) {
+      Alert.alert('Ошибка', 'Пожалуйста, введите корректный возраст (до 100 лет)');
+      return false;
+    }
+    if (ageNum < 1) {
+      Alert.alert('Ошибка', 'Пожалуйста, введите корректный возраст (от 1 года)');
+      return false;
+    }
+    return true;
+  };
+
+  const handleAgeChange = (text: string) => {
+    if (text === '' || /^\d+$/.test(text)) {
+      setAge(text);
+    }
+  };
 
   const handleContinue = () => {
     if (name && age && height && weight) {
-      navigation.navigate('GoalsScreen');
+      navigation.navigate('Time');
     }
+  };
+
+  const getBmiCategory = (bmiValue: number) => {
+    if (bmiValue < 18.5) return 'Недостаточный вес';
+    if (bmiValue < 25) return 'Нормальный вес';
+    if (bmiValue < 30) return 'Избыточный вес';
+    return 'Ожирение';
   };
 
   return (
@@ -46,35 +85,54 @@ const InfoScreen = () => {
           <TextInput
             style={styles.input}
             value={age}
-            onChangeText={setAge}
+            onChangeText={handleAgeChange}
             keyboardType="numeric"
             placeholder="Введите ваш возраст"
+            maxLength={2}
           />
         </View>
         
         {/* Рост */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Рост (см)</Text>
-          <TextInput
-            style={styles.input}
-            value={height}
-            onChangeText={setHeight}
-            keyboardType="numeric"
-            placeholder="Введите ваш рост"
+          <Text style={styles.label}>Рост: {displayHeight} см</Text>
+          <Slider
+            style={styles.slider}
+            minimumValue={140}
+            maximumValue={220}
+            step={1}
+            value={Number(height)}
+            onValueChange={(value) => setDisplayHeight(String(Math.round(value)))}
+            onSlidingComplete={(value) => setHeight(String(Math.round(value)))}
+            minimumTrackTintColor="#4CAF50"
+            maximumTrackTintColor="#E0E0E0"
+            thumbTintColor="#4CAF50"
           />
         </View>
         
         {/* Вес */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Вес (кг)</Text>
-          <TextInput
-            style={styles.input}
-            value={weight}
-            onChangeText={setWeight}
-            keyboardType="numeric"
-            placeholder="Введите ваш вес"
+          <Text style={styles.label}>Вес: {displayWeight} кг</Text>
+          <Slider
+            style={styles.slider}
+            minimumValue={30}
+            maximumValue={150}
+            step={1}
+            value={Number(weight)}
+            onValueChange={(value) => setDisplayWeight(String(Math.round(value)))}
+            onSlidingComplete={(value) => setWeight(String(Math.round(value)))}
+            minimumTrackTintColor="#4CAF50"
+            maximumTrackTintColor="#E0E0E0"
+            thumbTintColor="#4CAF50"
           />
         </View>
+
+        {bmi !== null && (
+          <View style={styles.bmiContainer}>
+            <Text style={styles.bmiLabel}>Индекс массы тела (ИМТ):</Text>
+            <Text style={styles.bmiValue}>{bmi}</Text>
+            <Text style={styles.bmiCategory}>{getBmiCategory(bmi)}</Text>
+          </View>
+        )}
       </View>
       
       <TouchableOpacity
@@ -161,6 +219,32 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
+  bmiContainer: {
+    backgroundColor: '#FAFAFA',
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  bmiLabel: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 5,
+  },
+  bmiValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#4CAF50',
+    marginBottom: 5,
+  },
+  bmiCategory: {
+    fontSize: 16,
+    color: '#666',
   },
 });
 

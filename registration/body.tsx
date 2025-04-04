@@ -163,11 +163,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 30,
     alignItems: 'center',
-    justifyContent: 'space-between', // Равномерное распределение пространства
+    justifyContent: 'space-between', 
   },
   bodyImage: {
     width: '40%',
-    height: '300%',
+    height: '100%',
     resizeMode: 'contain',
     alignSelf: 'center',
   },

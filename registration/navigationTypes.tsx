@@ -10,5 +10,7 @@ export type RootStackParamList = {
   Endurance: undefined;
   Breath: undefined;
   Restrictions: undefined;
+  Notification: undefined;
+  GoalFormation: undefined;
 
 }; 

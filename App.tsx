@@ -14,7 +14,9 @@ import BreathScreen from './registration/breath';
 import RestrictionsScreen from './registration/restrictions';
 import InfoScreen from './registration/info';
 import { RootStackParamList } from './registration/navigationTypes';
-
+import TimeScreen from './registration/time';
+import GoalFormationScreen from './registration/program';
+import NotificationPage from './registration/noitfication';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
@@ -39,6 +41,9 @@ const AppNavigator = () => {
           <Stack.Screen name="Breath" component={BreathScreen} />
           <Stack.Screen name="Restrictions" component={RestrictionsScreen} />
           <Stack.Screen name="Info" component={InfoScreen} />
+          <Stack.Screen name="Time" component={TimeScreen} />
+          <Stack.Screen name="GoalFormation" component={GoalFormationScreen} />
+          <Stack.Screen name="Notification" component={NotificationPage} />
           {/* цель,skill,flexibility,endurance,breath,restrictions,info*/}
 
         </Stack.Navigator>

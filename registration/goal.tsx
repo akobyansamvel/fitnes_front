@@ -1,7 +1,7 @@
 import { Checkbox } from 'expo-checkbox';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { RootStackParamList } from './navigationTypes';
 
 type GoalsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'GoalsScreen'>;
@@ -14,11 +14,11 @@ const GoalsScreen = ({ navigation }: Props) => {
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
 
   const goals = [
-    "Изучение основы йоги",
-    "Снижение стресса",
-    "Увеличение силы",
-    "Снижение веса",
-    "Улучшение гибкости"
+    { text: "Изучение основы йоги", icon: require('../assets/goal1.svg') },
+    { text: "Снижение стресса", icon: require('../assets/goal2.svg') },
+    { text: "Увеличение силы", icon: require('../assets/goal3.svg') },
+    { text: "Снижение веса", icon: require('../assets/goal4.svg') },
+    { text: "Улучшение гибкости", icon: require('../assets/goal5.svg') }
   ];
 
   const toggleGoal = (goal: string) => {
@@ -50,15 +50,18 @@ const GoalsScreen = ({ navigation }: Props) => {
             key={index}
             style={[
               styles.checkboxWrapper,
-              selectedGoals.includes(goal) && styles.selectedWrapper
+              selectedGoals.includes(goal.text) && styles.selectedWrapper
             ]}
-            onPress={() => toggleGoal(goal)}
+            onPress={() => toggleGoal(goal.text)}
           >
-            <Text style={styles.checkboxLabel}>{goal}</Text>
+            <View style={styles.iconContainer}>
+              <Image source={goal.icon} style={styles.icon} />
+            </View>
+            <Text style={styles.checkboxLabel}>{goal.text}</Text>
             <Checkbox
-              value={selectedGoals.includes(goal)}
-              onValueChange={() => toggleGoal(goal)}
-              color={selectedGoals.includes(goal) ? '#519076' : '#519076'}
+              value={selectedGoals.includes(goal.text)}
+              onValueChange={() => toggleGoal(goal.text)}
+              color={selectedGoals.includes(goal.text) ? '#519076' : '#519076'}
               style={styles.checkbox}
             />
           </TouchableOpacity>
@@ -134,6 +137,13 @@ const styles = StyleSheet.create({
   selectedWrapper: {
     backgroundColor: '#87D0B2',
   },
+  iconContainer: {
+    marginRight: 12,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
   checkbox: {
     position: 'absolute',
     right: 12,
@@ -155,7 +165,6 @@ const styles = StyleSheet.create({
   disabledButton: {
     backgroundColor: '#4D4D4D',
     opacity: 0.5,
-
   },
   buttonText: {
     color: '#fff',

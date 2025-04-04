@@ -34,10 +34,12 @@ const MotivationScreen = ({ navigation, route }: Props) => {
   };
 
   const handleContinue = () => {
-    navigation.navigate('Loading', {
-      selectedGoals: route.params?.selectedGoals || [],
-      selectedMotivations: selectedMotivations
-    });
+    if (selectedMotivations.length > 0) {
+      navigation.navigate('Loading', {
+        selectedGoals: route.params?.selectedGoals || [],
+        selectedMotivations: selectedMotivations
+      });
+    }
   };
 
   return (
@@ -53,23 +55,22 @@ const MotivationScreen = ({ navigation, route }: Props) => {
 
       <View style={styles.motivationsContainer}>
         {motivations.map((motivation, index) => (
-          <View key={index} style={styles.checkboxWrapper}>
+          <View key={index} style={[
+            styles.checkboxWrapper,
+            selectedMotivations.includes(motivation) && styles.selectedWrapper
+          ]}>
             <TouchableOpacity
-            key={index}
-            style={[
-              styles.touchableArea,
-              selectedMotivations.includes(motivation) && styles.selectedWrapper
-            ]}
-            onPress={() => toggleMotivation(motivation)}
-          >
-            <Checkbox
-              value={selectedMotivations.includes(motivation)}
-              onValueChange={() => toggleMotivation(motivation)}
-              color={selectedMotivations.includes(motivation) ? '#007AFF' : '#519076'}
-              style={styles.checkbox}
-            />
-            <Text style={styles.checkboxLabel}>{motivation}</Text>
-          </TouchableOpacity>
+              style={styles.touchableArea}
+              onPress={() => toggleMotivation(motivation)}
+            >
+              <Checkbox
+                value={selectedMotivations.includes(motivation)}
+                onValueChange={() => toggleMotivation(motivation)}
+                color={selectedMotivations.includes(motivation) ? '#007AFF' : '#519076'}
+                style={styles.checkbox}
+              />
+              <Text style={styles.checkboxLabel}>{motivation}</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </View>
@@ -96,7 +97,8 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flexDirection: 'row',
-    marginBottom: 30,
+    marginBottom: 40,
+    paddingHorizontal: 20,
   },
   progressBar: {
     flex: 1,
@@ -116,16 +118,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    marginTop: 20,
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
-    marginBottom: 30,
+    marginBottom: 10,
     textAlign: 'center',
   },
   motivationsContainer: {
     flex: 1,
     marginBottom: 20,
+    justifyContent: 'center',
   },
   checkboxWrapper: {
     flexDirection: 'row',
@@ -147,12 +151,17 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     fontSize: 16,
     flex: 1,
+    color: '#000',
+  },
+  selectedLabel: {
+    color: '#000',
   },
   button: {
     backgroundColor: '#4D4D4D',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginBottom: 20,
   },
   disabledButton: {
     opacity: 0.5,
