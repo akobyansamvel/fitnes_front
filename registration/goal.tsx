@@ -37,8 +37,8 @@ const GoalsScreen = ({ navigation }: Props) => {
     <View style={styles.container}>
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, styles.activeProgressBar]} />
-        <View style={styles.progressBar} />
-        <View style={styles.progressBar} />
+        <View style={[styles.progressBar,styles.completedProgressBar]} />
+        <View style={[styles.progressBar,styles.completedProgressBar]} />
       </View>
 
       <Text style={styles.title}> Какие цели вы хотите достичь? </Text>
@@ -46,18 +46,22 @@ const GoalsScreen = ({ navigation }: Props) => {
 
       <View style={styles.checkboxContainer}>
         {goals.map((goal, index) => (
-          <View key={index} style={[
-            styles.checkboxWrapper,
-            selectedGoals.includes(goal) && styles.selectedWrapper
-          ]}>
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.checkboxWrapper,
+              selectedGoals.includes(goal) && styles.selectedWrapper
+            ]}
+            onPress={() => toggleGoal(goal)}
+          >
+            <Text style={styles.checkboxLabel}>{goal}</Text>
             <Checkbox
               value={selectedGoals.includes(goal)}
               onValueChange={() => toggleGoal(goal)}
-              color={selectedGoals.includes(goal) ? '#4CAF50' : undefined}
+              color={selectedGoals.includes(goal) ? '#519076' : '#519076'}
               style={styles.checkbox}
             />
-            <Text style={styles.checkboxLabel}>{goal}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
 
@@ -93,12 +97,16 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   activeProgressBar: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#519076',
+  },
+  completedProgressBar: {
+    backgroundColor: '#ACACAC',
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
+    marginTop: 20,
     textAlign: 'center',
   },
   subtitle: {
@@ -108,6 +116,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   checkboxContainer: {
+    flex: 1,
+    justifyContent: 'center',
     marginBottom: 30,
   },
   checkboxWrapper: {
@@ -116,20 +126,24 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderColor: '#E0E0E0',
+    backgroundColor: '#F7F7F7',
     borderRadius: 8,
-    padding: 12,
+    padding: 16,
+    position: 'relative',
   },
   selectedWrapper: {
     backgroundColor: '#87D0B2',
   },
   checkbox: {
-    marginRight: 8,
+    position: 'absolute',
+    right: 12,
     width: 24,
     height: 24,
   },
   checkboxLabel: {
     fontSize: 16,
-    marginLeft: 8,
+    flex: 1,
+    paddingRight: 40,
   },
   button: {
     backgroundColor: '#4D4D4D',
@@ -140,6 +154,8 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: '#4D4D4D',
+    opacity: 0.5,
+
   },
   buttonText: {
     color: '#fff',

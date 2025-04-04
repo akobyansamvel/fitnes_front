@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './navigationTypes';
 import { useNavigation } from '@react-navigation/native';
-import { Checkbox } from 'expo-checkbox';
 
 type SkillScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Skill'>;
 
@@ -19,6 +18,14 @@ const SkillScreen = () => {
     { id: 5, label: 'Да, но давно и не регулярно' }
   ];
 
+  const handleOptionPress = (optionId: number) => {
+    if (selectedOption === optionId) {
+      setSelectedOption(null);
+    } else {
+      setSelectedOption(optionId);
+    }
+  };
+
   const handleContinue = () => {
     if (selectedOption) {
       navigation.navigate('Flexibility');
@@ -27,17 +34,16 @@ const SkillScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Индикатор прогресса (3 полоски, активна третья) */}
+      {/* Индикатор прогресса */}
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, styles.activeProgressBar]} />
         <View style={[styles.progressBar, styles.completedProgressBar]} />
         <View style={[styles.progressBar, styles.completedProgressBar]} />
       </View>
       
-      <Text style={styles.questionText}>Вы уже когда-нибудь 
-      пробовали йогу?</Text>
+      <Text style={styles.questionText}>Вы уже когда-нибудь пробовали йогу?</Text>
       
-      {/* 5 вариантов выбора */}
+      {/* Варианты выбора без чекбоксов */}
       <View style={styles.optionsContainer}>
         {options.map((option) => (
           <TouchableOpacity
@@ -46,16 +52,10 @@ const SkillScreen = () => {
               styles.optionContainer,
               selectedOption === option.id && styles.selectedOptionContainer
             ]}
-            onPress={() => setSelectedOption(option.id)}
+            onPress={() => handleOptionPress(option.id)}
           >
-            <Checkbox
-              value={selectedOption === option.id}
-              onValueChange={() => setSelectedOption(option.id)}
-              color={selectedOption === option.id ? '#4CAF50' : undefined}
-            />
             <Text style={[
               styles.optionText,
-              selectedOption === option.id && styles.selectedOptionText
             ]}>
               {option.label}
             </Text>
@@ -82,15 +82,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#ECE9E4',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 20,
-  },
-progressContainer: {
+  progressContainer: {
     flexDirection: 'row',
     marginBottom: 30,
   },
@@ -102,60 +96,55 @@ progressContainer: {
     borderRadius: 2,
   },
   activeProgressBar: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#4CAF50',
   },
   completedProgressBar: {
-    backgroundColor: '#4CAF50', 
+    backgroundColor: '#ACACAC', 
   },
   questionText: {
-    fontSize: 18,
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 20,
     textAlign: 'center',
-    marginBottom: 30,
-    color: '#333',
   },
   optionsContainer: {
-    marginBottom: 40,
+    flex: 1,
+    justifyContent: 'center',
+    marginBottom: 30,
   },
   optionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
     padding: 15,
     marginVertical: 8,
     borderWidth: 1,
     borderColor: '#E0E0E0',
     borderRadius: 8,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F7F7F7',
   },
   optionText: {
     fontSize: 16,
     color: '#333',
-    marginLeft: 10,
   },
-  selectedOptionText: {
-    color: '#2E7D32',
-    fontWeight: '500',
-  },
+ 
   selectedOptionContainer: {
     backgroundColor: '#87D0B2',
     borderColor: '#87D0B2',
   },
   continueButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#4D4D4D',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 20,
   },
   disabledContinueButton: {
-    backgroundColor: '#BDBDBD',
+    backgroundColor: '#4D4D4D',
+    opacity: 0.5,
   },
   continueButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  loadingContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

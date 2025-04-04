@@ -2,8 +2,8 @@ export type RootStackParamList = {
   Regist: undefined;
   Info: undefined;
   GoalsScreen: undefined;
-  BodyAreas: undefined;
-  Motivation: undefined;
+  BodyAreas: { selectedGoals: string[] };
+  Motivation: { selectedGoals: string[] };
   Loading: undefined;
   Skill: undefined;
   Flexibility: undefined;
