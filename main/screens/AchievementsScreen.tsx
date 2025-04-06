@@ -4,11 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-type RootStackParamList = {
-  Achievements: { date: string };
-  WorkoutDetails: { workoutId: number };
-};
+import { RootStackParamList } from '../navigationTypes';
 
 type AchievementsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Achievements'>;
 type AchievementsScreenRouteProp = RouteProp<RootStackParamList, 'Achievements'>;
@@ -19,7 +15,7 @@ type Props = {
 };
 
 type WorkoutType = {
-  id: number;
+  id: string;
   title: string;
   duration: string;
   calories: number;
@@ -30,7 +26,7 @@ type WorkoutType = {
 const workouts: { [key: string]: WorkoutType[] } = {
   '2025-04-08': [
     {
-      id: 1,
+      id: '1',
       title: 'Йога для начинающих',
       duration: '30 мин',
       calories: 150,
@@ -39,14 +35,14 @@ const workouts: { [key: string]: WorkoutType[] } = {
   ],
   '2025-04-10': [
     {
-      id: 2,
+      id: '2',
       title: 'Утренняя растяжка',
       duration: '20 мин',
       calories: 100,
       image: 'https://via.placeholder.com/100',
     },
     {
-      id: 3,
+      id: '3',
       title: 'Медитация',
       duration: '15 мин',
       calories: 50,
@@ -54,7 +50,7 @@ const workouts: { [key: string]: WorkoutType[] } = {
       isSpecial: true,
     },
     {
-      id: 4,
+      id: '4',
       title: 'Вечерняя йога',
       duration: '25 мин',
       calories: 120,
@@ -104,35 +100,20 @@ const AchievementsScreen = ({ route, navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Feather name="arrow-left" size={24} color="#2d4150" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Мои достижения</Text>
-        <View style={{ width: 24 }} />
-      </View>
-
-      <ScrollView style={styles.content}>
         <Text style={styles.date}>{formattedDate}</Text>
-
-        <View style={styles.statsContainer}>
+        <View style={styles.stats}>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{dayWorkouts.length}</Text>
-            <Text style={styles.statLabel}>Тренировок</Text>
+            <Feather name="clock" size={16} color="#666" />
+            <Text style={styles.statText}>{totalDuration} мин</Text>
           </View>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>{totalDuration}</Text>
-            <Text style={styles.statLabel}>Минут</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>{totalCalories}</Text>
-            <Text style={styles.statLabel}>Калорий</Text>
+            <Feather name="zap" size={16} color="#666" />
+            <Text style={styles.statText}>{totalCalories} ккал</Text>
           </View>
         </View>
-
-        <View style={styles.workoutsContainer}>
-          <Text style={styles.sectionTitle}>Тренировки</Text>
-          {dayWorkouts.map(renderWorkoutCard)}
-        </View>
+      </View>
+      <ScrollView style={styles.content}>
+        {dayWorkouts.map(renderWorkoutCard)}
       </ScrollView>
     </SafeAreaView>
   );
@@ -144,95 +125,63 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  date: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  stats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  statItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#2d4150',
+  statText: {
+    marginLeft: 5,
+    color: '#666',
   },
   content: {
     flex: 1,
-    padding: 16,
-  },
-  date: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#2d4150',
-    marginBottom: 24,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 32,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#2d4150',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#7f8c8d',
-  },
-  workoutsContainer: {
-    flex: 1,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#2d4150',
-    marginBottom: 16,
+    padding: 20,
   },
   workoutCard: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 10,
+    marginBottom: 15,
+    overflow: 'hidden',
   },
   workoutImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
+    width: 100,
+    height: 100,
   },
   workoutInfo: {
     flex: 1,
-    marginLeft: 12,
+    padding: 15,
     justifyContent: 'space-between',
   },
   workoutHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   workoutTitle: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#2d4150',
+    fontWeight: 'bold',
+    flex: 1,
   },
   workoutStats: {
     flexDirection: 'row',
-    marginTop: 8,
+    justifyContent: 'space-between',
   },
   workoutStat: {
-    fontSize: 14,
-    color: '#7f8c8d',
-    marginRight: 12,
+    color: '#666',
   },
 });
 

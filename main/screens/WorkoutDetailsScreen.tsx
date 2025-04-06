@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { RootStackParamList } from '../navigationTypes';
 
 type Exercise = {
   name: string;
@@ -26,17 +27,39 @@ type Workout = {
   exercises: Exercise[];
 };
 
-type RootStackParamList = {
-  WorkoutDetails: { workout: Workout };
-};
-
 type Props = NativeStackScreenProps<RootStackParamList, 'WorkoutDetails'>;
 
 const WorkoutDetailsScreen = ({ route, navigation }: Props) => {
-  const { workout } = route.params;
+  const { workoutId } = route.params;
   const [activeExerciseIndex, setActiveExerciseIndex] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<Video>(null);
+
+  // Временные данные для демонстрации
+  const workout: Workout = {
+    id: workoutId,
+    title: 'Йога для начинающих',
+    image: require('../../assets/workout1.jpg'),
+    duration: '30 мин',
+    calories: 150,
+    exercises: [
+      {
+        name: 'Поза горы',
+        duration: 60,
+        videoUrl: 'https://example.com/video1.mp4',
+      },
+      {
+        name: 'Поза собаки мордой вниз',
+        duration: 45,
+        videoUrl: 'https://example.com/video2.mp4',
+      },
+      {
+        name: 'Поза воина',
+        duration: 30,
+        videoUrl: 'https://example.com/video3.mp4',
+      },
+    ],
+  };
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -99,35 +122,17 @@ const WorkoutDetailsScreen = ({ route, navigation }: Props) => {
                   {formatTime(exercise.duration)}
                 </Text>
               </View>
-              <Feather 
-                name={activeExerciseIndex === index ? "pause-circle" : "play-circle"} 
-                size={24} 
-                color="#00adf5" 
-              />
             </TouchableOpacity>
-            
             {activeExerciseIndex === index && exercise.videoUrl && (
-              <View style={styles.videoContainer}>
-                <Video
-                  ref={videoRef}
-                  source={{ uri: exercise.videoUrl }}
-                  style={styles.video}
-                  resizeMode={ResizeMode.COVER}
-                  isLooping
-                  shouldPlay={isPlaying}
-                  useNativeControls
-                />
-                <TouchableOpacity
-                  style={styles.playPauseButton}
-                  onPress={() => setIsPlaying(!isPlaying)}
-                >
-                  <Feather
-                    name={isPlaying ? "pause" : "play"}
-                    size={24}
-                    color="#fff"
-                  />
-                </TouchableOpacity>
-              </View>
+              <Video
+                ref={videoRef}
+                style={styles.video}
+                source={{ uri: exercise.videoUrl }}
+                useNativeControls
+                resizeMode={ResizeMode.CONTAIN}
+                isLooping
+                shouldPlay={isPlaying}
+              />
             )}
           </View>
         ))}
@@ -146,36 +151,34 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     padding: 20,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
-    textAlign: 'center',
+    marginBottom: 10,
   },
   stats: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 20,
+    marginBottom: 20,
   },
   statItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    marginRight: 20,
   },
   statText: {
     color: '#fff',
+    marginLeft: 5,
     fontSize: 16,
   },
   content: {
@@ -185,58 +188,34 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2d4150',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   exerciseItem: {
+    padding: 15,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  activeExerciseItem: {
+    backgroundColor: '#e8f5e9',
+  },
+  exerciseInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  activeExerciseItem: {
-    backgroundColor: '#e3f2fd',
-    borderColor: '#00adf5',
-    borderWidth: 1,
-  },
-  exerciseInfo: {
-    flex: 1,
   },
   exerciseName: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#2d4150',
-    marginBottom: 4,
   },
   exerciseTime: {
-    fontSize: 14,
     color: '#666',
-  },
-  videoContainer: {
-    width: '100%',
-    height: 200,
-    marginBottom: 12,
-    borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: '#000',
   },
   video: {
     width: '100%',
-    height: '100%',
-  },
-  playPauseButton: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: 200,
+    marginTop: 10,
+    borderRadius: 10,
   },
 });
 
