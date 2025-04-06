@@ -1,17 +1,65 @@
 import { Feather } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { LineChart } from 'react-native-chart-kit';
-import CircularProgress from 'react-native-circular-progress-indicator';
+import { Circle as SvgCircle, Svg as SvgComponent } from 'react-native-svg';
 
-type NavigationProp = {
-  navigate: (screen: string) => void;
+type RootStackParamList = {
+  Achievements: { date: string };
+  Settings: undefined;
+  CreateWorkout: undefined;
 };
 
+type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 interface ProfileScreenProps {
-  navigation: NavigationProp;
+  navigation: ProfileScreenNavigationProp;
 }
+
+type MarkedDatesType = {
+  [key: string]: {
+    selected?: boolean;
+    selectedColor?: string;
+    disabled?: boolean;
+    disableTouchEvent?: boolean;
+  };
+};
+
+const CustomProgress = ({ value, maxValue, title, color }: { value: number; maxValue: number; title: string; color: string }) => {
+  const radius = 40;
+  const strokeWidth = 8;
+  const circumference = 2 * Math.PI * radius;
+  const progress = (value / maxValue) * circumference;
+
+  return (
+    <View style={styles.progressItem}>
+      <SvgComponent width={radius * 2} height={radius * 2}>
+        <SvgCircle
+          cx={radius}
+          cy={radius}
+          r={radius - strokeWidth / 2}
+          stroke="#f0f0f0"
+          strokeWidth={strokeWidth}
+          fill="none"
+        />
+        <SvgCircle
+          cx={radius}
+          cy={radius}
+          r={radius - strokeWidth / 2}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={`${progress} ${circumference}`}
+          transform={`rotate(-90 ${radius} ${radius})`}
+        />
+      </SvgComponent>
+      <Text style={[styles.progressValue, { color }]}>{value}</Text>
+      <Text style={styles.progressTitle}>{title}</Text>
+    </View>
+  );
+};
 
 const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
   const [activeTab, setActiveTab] = useState<'all' | 'week' | 'month' | 'year'>('all');
@@ -28,6 +76,72 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
         data: [55, 52, 48]
       }
     ]
+  };
+
+  const today = new Date();
+  const april8 = new Date(2025, 3, 8); // Месяцы начинаются с 0
+  const april10 = new Date(2025, 3, 10);
+
+  const getDateStatus = (date: Date) => {
+    // Преобразуем даты в строки формата YYYY-MM-DD для сравнения
+    const dateStr = date.toISOString().split('T')[0];
+    const april8Str = '2025-04-08';
+    const april10Str = '2025-04-10';
+
+    if (dateStr === april8Str) return 'completed';
+    if (dateStr === april10Str) return 'completed';
+    if (dateStr < april8Str) return 'inactive';
+    if (dateStr > april10Str) return 'future';
+    return 'missed';
+  };
+
+  const handleDayPress = (day: any) => {
+    const selectedDate = new Date(day.dateString);
+    const status = getDateStatus(selectedDate);
+
+    console.log('Selected date:', day.dateString, 'Status:', status);
+
+    switch (status) {
+      case 'completed':
+        console.log('Navigating to Achievements with date:', day.dateString);
+        navigation.getParent()?.navigate('Achievements', { date: day.dateString });
+        break;
+      case 'inactive':
+        alert('Вы в этот день не тренировались');
+        break;
+      case 'future':
+        alert('Этот день еще не прошел');
+        break;
+      case 'missed':
+        alert('Вы в этот день не тренировались');
+        break;
+    }
+  };
+
+  const markedDates: MarkedDatesType = {
+    '2025-04-08': {
+      selected: true,
+      selectedColor: '#2d4150',
+    },
+    '2025-04-10': {
+      selected: true,
+      selectedColor: '#2d4150',
+    },
+  };
+
+  // Добавляем серые даты до 8 апреля
+  for (let i = 1; i <= 7; i++) {
+    const date = `2025-04-${String(i).padStart(2, '0')}`;
+    markedDates[date] = {
+      disabled: true,
+      disableTouchEvent: false,
+    };
+  }
+
+  // Добавляем серую дату для 9 апреля
+  markedDates['2025-04-09'] = {
+    disabled: true,
+    disableTouchEvent: false,
   };
 
   const renderTabButton = (title: string, key: 'all' | 'week' | 'month' | 'year') => (
@@ -57,48 +171,35 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
             <Feather name="user" size={24} color="#2d4150" />
           </TouchableOpacity>
           <Feather name="star" size={24} color="#2d4150" />
-          <Feather name="settings" size={24} color="#2d4150" />
+          <TouchableOpacity 
+            style={styles.statItem}
+            onPress={() => navigation.navigate('Settings')}
+          >
+            <Feather name="settings" size={24} color="#2d4150" />
+          </TouchableOpacity>
         </View>
       </View>
 
       {/* Круговые диаграммы */}
       <View style={styles.progressContainer}>
-        <View style={styles.progressItem}>
-          <CircularProgress
-            value={stats.workouts[activeTab]}
-            radius={40}
-            duration={2000}
-            progressValueColor={'#2d4150'}
-            maxValue={200}
-            title={'Тренировки'}
-            titleColor={'#7f8c8d'}
-            titleStyle={{ fontSize: 14 }}
-          />
-        </View>
-        <View style={styles.progressItem}>
-          <CircularProgress
-            value={stats.calories[activeTab]}
-            radius={40}
-            duration={2000}
-            progressValueColor={'#2d4150'}
-            maxValue={15000}
-            title={'Калории'}
-            titleColor={'#7f8c8d'}
-            titleStyle={{ fontSize: 14 }}
-          />
-        </View>
-        <View style={styles.progressItem}>
-          <CircularProgress
-            value={stats.minutes[activeTab]}
-            radius={40}
-            duration={2000}
-            progressValueColor={'#2d4150'}
-            maxValue={2000}
-            title={'Минуты'}
-            titleColor={'#7f8c8d'}
-            titleStyle={{ fontSize: 14 }}
-          />
-        </View>
+        <CustomProgress
+          value={stats.workouts[activeTab]}
+          maxValue={200}
+          title="Тренировки"
+          color="#2d4150"
+        />
+        <CustomProgress
+          value={stats.calories[activeTab]}
+          maxValue={15000}
+          title="Калории"
+          color="#2d4150"
+        />
+        <CustomProgress
+          value={stats.minutes[activeTab]}
+          maxValue={2000}
+          title="Минуты"
+          color="#2d4150"
+        />
       </View>
 
       {/* Табы периодов */}
@@ -116,12 +217,22 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
           backgroundColor: '#ffffff',
           calendarBackground: '#ffffff',
           textSectionTitleColor: '#b6c1cd',
-          selectedDayBackgroundColor: '#00adf5',
+          selectedDayBackgroundColor: '#2d4150',
           selectedDayTextColor: '#ffffff',
-          todayTextColor: '#00adf5',
+          todayTextColor: '#2d4150',
           dayTextColor: '#2d4150',
           textDisabledColor: '#d9e1e8',
+          dotColor: '#00adf5',
+          selectedDotColor: '#ffffff',
+          arrowColor: '#2d4150',
+          monthTextColor: '#2d4150',
+          textDayFontSize: 16,
+          textMonthFontSize: 16,
+          textDayHeaderFontSize: 14,
         }}
+        markedDates={markedDates}
+        onDayPress={handleDayPress}
+        hideExtraDays={true}
       />
 
       {/* Информация о весе */}
@@ -197,6 +308,7 @@ const styles = StyleSheet.create({
   },
   progressItem: {
     alignItems: 'center',
+    marginHorizontal: 10,
   },
   tabContainer: {
     flexDirection: 'row',
@@ -260,6 +372,28 @@ const styles = StyleSheet.create({
   chart: {
     marginVertical: 8,
     borderRadius: 16,
+  },
+  statItem: {
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#7f8c8d',
+    marginBottom: 4,
+  },
+  progressValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 8,
+  },
+  progressTitle: {
+    fontSize: 14,
+    color: '#7f8c8d',
+    marginTop: 4,
   },
 });
 
