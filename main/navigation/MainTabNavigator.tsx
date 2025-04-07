@@ -40,13 +40,13 @@ const MainTabNavigator = () => {
           fontSize: 20,
           fontWeight: '600',
         },
+        headerShown: false,
       }}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Главная',
           tabBarIcon: ({ color, size }) => (
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons name="home" size={28} color={color} />
@@ -58,10 +58,10 @@ const MainTabNavigator = () => {
         name="CreateWorkout"
         component={CreateWorkoutScreen}
         options={{
-          title: 'Создать',
+          title: 'Новости',
           tabBarIcon: ({ color, size }) => (
             <View style={styles.iconContainer}>
-              <MaterialCommunityIcons name="plus-circle-outline" size={28} color={color} />
+              <MaterialCommunityIcons name="newspaper" size={28} color={color} />
             </View>
           ),
         }}
