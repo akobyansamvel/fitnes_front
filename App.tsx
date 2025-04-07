@@ -5,6 +5,8 @@ import React from 'react';
 import { LogBox, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import MainTabNavigator from './main/navigation/MainTabNavigator';
 import AchievementsScreen from './main/screens/AchievementsScreen';
 import CreateWorkoutScreen from './main/screens/CreateWorkoutScreen';
@@ -35,6 +37,9 @@ LogBox.ignoreLogs([
   'ColorPropType will be removed',
 ]);
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
 const Stack = createStackNavigator<RootStackParamList>();
 
 const styles = StyleSheet.create({
@@ -44,6 +49,21 @@ const styles = StyleSheet.create({
 });
 
 const AppNavigator = () => {
+  const [fontsLoaded] = useFonts({
+    'Lora': require('./assets/fonts/Lora.ttf'),
+    'Lora-Italic': require('./assets/fonts/Lora-Italic.ttf'),
+  });
+
+  React.useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>

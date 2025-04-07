@@ -431,6 +431,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#2d4150',
     marginTop: 4,
+    fontFamily: 'Lora',
   },
   statsContainer: {
     borderBottomLeftRadius: 15,
@@ -450,10 +451,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#2d4150',
     marginBottom: 4,
+    fontFamily: 'Lora',
   },
   statLabel: {
     fontSize: 14,
     color: '#7f8c8d',
+    fontFamily: 'Lora',
   },
   progressContainer: {
     borderRadius: 15,
@@ -491,9 +494,11 @@ const styles = StyleSheet.create({
   tabText: {
     color: 'black',
     fontSize: 14,
+    fontFamily: 'Lora',
   },
   activeTabText: {
     color: 'black',
+    fontFamily: 'Lora',
   },
   calendar: {
     marginVertical: 16,
@@ -517,11 +522,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#7f8c8d',
     marginBottom: 4,
+    fontFamily: 'Lora',
   },
   weightValue: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#2d4150',
+    fontFamily: 'Lora',
   },
   chartContainer: {
     alignItems: 'center',
@@ -538,11 +545,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 8,
+    fontFamily: 'Lora',
   },
   progressTitle: {
     fontSize: 14,
     color: '#7f8c8d',
     marginTop: 4,
+    fontFamily: 'Lora',
   },
   addWeightButton: {
     marginBottom: 15,
@@ -557,6 +566,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Lora',
   },
   modalContainer: {
     flex: 1,
@@ -575,6 +585,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 15,
     textAlign: 'center',
+    fontFamily: 'Lora',
   },
   weightInput: {
     borderWidth: 1,
@@ -603,6 +614,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+    fontFamily: 'Lora',
   },
 });
 
