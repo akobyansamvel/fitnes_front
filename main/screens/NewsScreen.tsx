@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MainTabParamList } from '../navigationTypes';
 
 type NewsItem = {
@@ -18,15 +18,15 @@ const NewsScreen = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [imageErrors, setImageErrors] = useState<{[key: number]: boolean}>({});
   const navigation = useNavigation<NativeStackNavigationProp<MainTabParamList>>();
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://10.179.120.139:8000/api/news/');
+        const response = await fetch('http://192.168.0.176:8000/api/news/');
         const data = await response.json();
+        console.log('Полученные новости:', JSON.stringify(data, null, 2));
         setNews(data);
       } catch (err) {
         setError('Ошибка при загрузке новостей');
@@ -39,15 +39,9 @@ const NewsScreen = () => {
     fetchNews();
   }, []);
 
-  const handleImageError = (newsId: number) => {
-    setImageErrors(prev => ({
-      ...prev,
-      [newsId]: true
-    }));
-  };
-
   const renderNewsItem = ({ item }: { item: NewsItem }) => {
-    const imageUrl = `http://10.179.120.139:8000${item.preview_image}`;
+    const imageUrl = item.preview_image;
+    console.log('URL изображения:', imageUrl);
 
     return (
       <TouchableOpacity
@@ -55,11 +49,11 @@ const NewsScreen = () => {
         onPress={() => navigation.navigate('NewsDetail', { newsId: item.id })}
       >
         <Image 
-          source={imageErrors[item.id] ? require('../../assets/default-news.png') : { uri: imageUrl }} 
+          source={{ uri: imageUrl }}
           style={styles.newsImage}
-          onError={() => {
-            console.error('Error loading news image:', imageUrl);
-            handleImageError(item.id);
+          onError={(e) => {
+            console.error('Ошибка загрузки изображения:', e.nativeEvent.error);
+            console.error('URL изображения:', imageUrl);
           }}
         />
         <View style={styles.overlay}>

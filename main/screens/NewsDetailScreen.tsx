@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
-import { MainTabParamList } from '../navigationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { MainTabParamList } from '../navigationTypes';
 
 type NewsDetailRouteProp = RouteProp<MainTabParamList, 'NewsDetail'>;
 
@@ -21,8 +21,6 @@ type NewsDetail = {
   second_content: string;
 };
 
-const BASE_URL = 'http://10.179.120.139:8000';
-
 const NewsDetailScreen = () => {
   const route = useRoute<NewsDetailRouteProp>();
   const navigation = useNavigation<NativeStackNavigationProp<MainTabParamList>>();
@@ -30,7 +28,7 @@ const NewsDetailScreen = () => {
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
-    fetch(`${BASE_URL}/api/news/${route.params.newsId}/`)
+    fetch(`http://192.168.0.176:8000/api/news/${route.params.newsId}/`)
       .then(response => response.json())
       .then(data => setNewsDetail(data))
       .catch(error => console.error('Error fetching news detail:', error));
@@ -44,7 +42,7 @@ const NewsDetailScreen = () => {
     );
   }
 
-  const imageUrl = `${BASE_URL}${newsDetail.preview_image}`;
+  const imageUrl = newsDetail.preview_image;
 
   return (
     <ScrollView style={styles.container}>
@@ -56,7 +54,7 @@ const NewsDetailScreen = () => {
           <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
         </TouchableOpacity>
         <Image 
-          source={imageError ? require('../../assets/default-avatar.png') : { uri: imageUrl }} 
+          source={{ uri: imageUrl }}
           style={styles.newsImage}
           onError={() => {
             console.error('Error loading news detail image:', imageUrl);

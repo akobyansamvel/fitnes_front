@@ -1,24 +1,14 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MainTabParamList } from '../navigationTypes';
+import { Lesson } from '../types';
 
 type CategoryScreenRouteProp = RouteProp<MainTabParamList, 'CategoryScreen'>;
 type CategoryScreenNavigationProp = StackNavigationProp<MainTabParamList>;
 
-type Lesson = {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  duration_minutes: number;
-  calories: number;
-  video_file: string;
-  preview_image: string;
-};
-
-const BASE_URL = 'http://10.179.120.139:8000';
+const BASE_URL = 'http://192.168.0.176:8000';
 
 const CategoryScreen = () => {
   const route = useRoute<CategoryScreenRouteProp>();
@@ -93,7 +83,6 @@ const CategoryScreen = () => {
   };
 
   const renderLessonItem = ({ item }: { item: Lesson }) => {
-    const [imageError, setImageError] = useState(false);
     const previewUrl = `${BASE_URL}${item.preview_image}`;
 
     return (
@@ -106,13 +95,10 @@ const CategoryScreen = () => {
       >
         <View style={styles.lessonImageContainer}>
           <Image
-            source={imageError ? require('../../assets/default-avatar.png') : { uri: previewUrl }}
+            source={{ uri: previewUrl }}
             style={styles.lessonImage}
             resizeMode="cover"
-            onError={() => {
-              console.error('Error loading preview image:', previewUrl);
-              setImageError(true);
-            }}
+            defaultSource={require('../../assets/default-avatar.png')}
           />
         </View>
         <View style={styles.lessonContent}>
