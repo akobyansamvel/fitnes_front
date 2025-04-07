@@ -10,6 +10,7 @@ type RootStackParamList = {
   Achievements: { date: string };
   Settings: undefined;
   CreateWorkout: undefined;
+  LastLesson: undefined;
 };
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -70,6 +71,7 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
   });
   const [isModalVisible, setModalVisible] = useState(false);
   const [newWeight, setNewWeight] = useState('');
+  const [avatarError, setAvatarError] = useState(false);
   
   const statsData = {
     statworkouts: { all: 49, week: 6, month: 14, year: 48 },
@@ -200,15 +202,19 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
         </View>
         <View style={styles.profileSection}>
           <Image 
-            source={{ uri: 'https://via.placeholder.com/100' }}
+            source={avatarError ? require('../../assets/default-avatar.png') : { uri: 'https://via.placeholder.com/100' }}
             style={styles.avatar}
+            onError={() => setAvatarError(true)}
           />
         </View>
         
     
       <View style={styles.contentContainer}>
       <View style={styles.iconsContainer}>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity 
+            style={styles.iconButton}
+            onPress={() => navigation.navigate('LastLesson')}
+          >
             <Feather name="clock" size={24} color="#2d4150" />
             <Text style={styles.iconText}>История</Text>
           </TouchableOpacity>

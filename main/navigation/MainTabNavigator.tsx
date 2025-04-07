@@ -9,6 +9,7 @@ import LessonScreen from '../screens/LessonScreen';
 import NewsDetailScreen from '../screens/NewsDetailScreen';
 import NewsScreen from '../screens/NewsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import CreateWorkoutScreen from '../screens/CreateWorkoutScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -55,7 +56,7 @@ const MainTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="CreateWorkout"
+        name="NewsScreen"
         component={NewsScreen}
         options={{
           title: 'Новости',

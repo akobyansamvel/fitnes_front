@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MainTabParamList } from '../navigationTypes';
 
@@ -17,6 +17,8 @@ type Lesson = {
   video_file: string;
   preview_image: string;
 };
+
+const BASE_URL = 'http://10.179.120.139:8000';
 
 const CategoryScreen = () => {
   const route = useRoute<CategoryScreenRouteProp>();
@@ -91,9 +93,8 @@ const CategoryScreen = () => {
   };
 
   const renderLessonItem = ({ item }: { item: Lesson }) => {
-    // Формируем полный URL для превью
-    const previewUrl = `http://10.179.120.139:8000${item.preview_image}`;
-    console.log('Preview URL:', previewUrl);
+    const [imageError, setImageError] = useState(false);
+    const previewUrl = `${BASE_URL}${item.preview_image}`;
 
     return (
       <TouchableOpacity 
@@ -105,12 +106,12 @@ const CategoryScreen = () => {
       >
         <View style={styles.lessonImageContainer}>
           <Image
-            source={{ uri: previewUrl }}
+            source={imageError ? require('../../assets/default-avatar.png') : { uri: previewUrl }}
             style={styles.lessonImage}
             resizeMode="cover"
-            onError={(error) => {
-              console.error('Error loading preview image:', error.nativeEvent);
-              console.log('Failed to load image from URL:', previewUrl);
+            onError={() => {
+              console.error('Error loading preview image:', previewUrl);
+              setImageError(true);
             }}
           />
         </View>

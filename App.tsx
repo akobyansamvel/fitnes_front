@@ -28,9 +28,11 @@ import NotificationPage from './registration/noitfication.tsx';
 import GoalFormationScreen from './registration/program.tsx';
 import RegistPage from './registration/reg.tsx';
 import RestrictionsScreen from './registration/restrictions.tsx';
+import LastLesson from './main/screens/LastLesson';
 import SkillScreen from './registration/skill.tsx';
 import TimeScreen from './registration/time.tsx';
-
+import NewsDetailScreen from './main/screens/NewsDetailScreen.tsx';
+import NewsScreen from './main/screens/NewsScreen.tsx';
 // Игнорируем предупреждения о react-native-video
 LogBox.ignoreLogs([
   'ViewPropTypes will be removed',
@@ -97,9 +99,12 @@ const AppNavigator = () => {
               <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="EditProfile" component={EditProfileScreen} />
               <Stack.Screen name="Settings" component={SettingsScreen} />
+              <Stack.Screen name="LastLesson" component={LastLesson} />
               <Stack.Screen name="Achievements" component={AchievementsScreen} />
               <Stack.Screen name="CreateWorkout" component={CreateWorkoutScreen} />
               <Stack.Screen name="WorkoutDetails" component={WorkoutDetailsScreen} />
+              <Stack.Screen name="NewsDetail" component={NewsDetailScreen} />
+              <Stack.Screen name="NewsScreen" component={NewsScreen} />
             </Stack.Navigator>
             <StatusBar style="auto" />
           </NavigationContainer>

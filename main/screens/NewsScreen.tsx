@@ -16,33 +16,81 @@ type NewsItem = {
 
 const NewsScreen = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [imageErrors, setImageErrors] = useState<{[key: number]: boolean}>({});
   const navigation = useNavigation<NativeStackNavigationProp<MainTabParamList>>();
 
   useEffect(() => {
-    fetch('http://10.179.120.139:8000/api/news/')
-      .then(response => response.json())
-      .then(data => setNews(data))
-      .catch(error => console.error('Error fetching news:', error));
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://10.179.120.139:8000/api/news/');
+        const data = await response.json();
+        setNews(data);
+      } catch (err) {
+        setError('Ошибка при загрузке новостей');
+        console.error('Error fetching news:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
   }, []);
 
-  const renderNewsItem = ({ item }: { item: NewsItem }) => (
-    <TouchableOpacity
-      style={styles.newsCard}
-      onPress={() => navigation.navigate('NewsDetail', { newsId: item.id })}
-    >
-      <Image source={{ uri: item.preview_image }} style={styles.newsImage} />
-      <View style={styles.overlay}>
-        <View style={styles.tagContainer}>
-          {item.tags.map(tag => (
-            <View key={tag.id} style={styles.tag}>
-              <Text style={styles.tagText}>#{tag.name}</Text>
-            </View>
-          ))}
+  const handleImageError = (newsId: number) => {
+    setImageErrors(prev => ({
+      ...prev,
+      [newsId]: true
+    }));
+  };
+
+  const renderNewsItem = ({ item }: { item: NewsItem }) => {
+    const imageUrl = `http://10.179.120.139:8000${item.preview_image}`;
+
+    return (
+      <TouchableOpacity
+        style={styles.newsCard}
+        onPress={() => navigation.navigate('NewsDetail', { newsId: item.id })}
+      >
+        <Image 
+          source={imageErrors[item.id] ? require('../../assets/default-news.png') : { uri: imageUrl }} 
+          style={styles.newsImage}
+          onError={() => {
+            console.error('Error loading news image:', imageUrl);
+            handleImageError(item.id);
+          }}
+        />
+        <View style={styles.overlay}>
+          <View style={styles.tagContainer}>
+            {item.tags.map(tag => (
+              <View key={tag.id} style={styles.tag}>
+                <Text style={styles.tagText}>#{tag.name}</Text>
+              </View>
+            ))}
+          </View>
+          <Text style={styles.newsTitle}>{item.title}</Text>
         </View>
-        <Text style={styles.newsTitle}>{item.title}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Загрузка...</Text>
       </View>
-    </TouchableOpacity>
-  );
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -116,6 +164,11 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
     fontFamily: 'Lora-Regular',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 

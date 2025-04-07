@@ -10,12 +10,16 @@ export type MainTabParamList = {
   };
   LessonScreen: {
     lesson: Lesson;
+    fromHistory?: boolean;
+    returnScreen?: string;
   };
   Profile: undefined;
   CreateWorkout: undefined;
   NewsDetail: {
     newsId: number;
   };
+  NewsScreen: undefined;
+  LastLesson: undefined;
 };
 
 export type RootStackParamList = {
@@ -23,6 +27,7 @@ export type RootStackParamList = {
   Profile: undefined;
   EditProfile: undefined;
   Settings: undefined;
+  LastLesson: undefined;
   Achievements: {
     date: string;
   };
