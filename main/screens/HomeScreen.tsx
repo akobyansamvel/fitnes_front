@@ -174,7 +174,7 @@ const HomeScreen = () => {
   };
 
   const handleCategoryPress = async (category: Category) => {
-    const apiUrl = `http://192.168.0.176:8000/api/lessons/category/${category.url}/`;
+    const apiUrl = `http://10.179.120.139:8000/api/lessons/category/${category.url}/`;
     console.log('Attempting API request to:', apiUrl);
 
     try {

@@ -92,7 +92,7 @@ const CategoryScreen = () => {
 
   const renderLessonItem = ({ item }: { item: Lesson }) => {
     // Формируем полный URL для превью
-    const previewUrl = `http://192.168.0.176:8000${item.preview_image}`;
+    const previewUrl = `http://10.179.120.139:8000${item.preview_image}`;
     console.log('Preview URL:', previewUrl);
 
     return (

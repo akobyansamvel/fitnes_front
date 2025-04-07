@@ -34,7 +34,7 @@ const LessonScreen = () => {
       setError('Неверный формат видеофайла');
       return;
     }
-    const streamUrl = `http://192.168.0.176:8000/api/lessons/stream/${encodeURIComponent(videoFileName)}`;
+    const streamUrl = `http://10.179.120.139:8000/api/lessons/stream/${encodeURIComponent(videoFileName)}`;
     setVideoUrl(streamUrl);
     
     // Проверяем доступность видео

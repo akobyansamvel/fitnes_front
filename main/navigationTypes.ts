@@ -1,15 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
-
-type Lesson = {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  duration_minutes: number;
-  calories: number;
-  video_file: string;
-  preview_image: string;
-};
+import { Lesson } from './types';
 
 export type MainTabParamList = {
   Home: undefined;
@@ -23,6 +13,9 @@ export type MainTabParamList = {
   };
   Profile: undefined;
   CreateWorkout: undefined;
+  NewsDetail: {
+    newsId: number;
+  };
 };
 
 export type RootStackParamList = {
