@@ -1,4 +1,3 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
 import { Lesson } from './types';
 
 export type MainTabParamList = {
@@ -23,16 +22,12 @@ export type MainTabParamList = {
 };
 
 export type RootStackParamList = {
-  MainTab: NavigatorScreenParams<MainTabParamList>;
+  Home: undefined;
+  Workouts: undefined;
   Profile: undefined;
-  EditProfile: undefined;
-  Settings: undefined;
+  LessonScreen: { lesson: Lesson; fromHistory?: boolean };
   LastLesson: undefined;
-  Achievements: {
-    date: string;
-  };
-  CreateWorkout: undefined;
-  WorkoutDetails: {
-    workoutId: string;
-  };
+  NewsDetail: { newsId: number };
+  NewsScreen: undefined;
+  FavoriteLessonsScreen: undefined;
 }; 

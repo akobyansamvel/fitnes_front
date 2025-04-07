@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Modal, TextInput, Alert } from 'react-native';
+import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { LineChart } from 'react-native-chart-kit';
 import { Circle as SvgCircle, Svg as SvgComponent } from 'react-native-svg';
@@ -11,6 +11,7 @@ type RootStackParamList = {
   Settings: undefined;
   CreateWorkout: undefined;
   LastLesson: undefined;
+  FavoriteLessonsScreen: undefined;
 };
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -222,7 +223,10 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
             <Feather name="plus" size={24} color="#2d4150" />
             <Text style={styles.iconText}>Индивидуальное</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity 
+            style={styles.iconButton}
+            onPress={() => navigation.navigate('FavoriteLessonsScreen')}
+          >
             <Feather name="heart" size={24} color="#2d4150" />
             <Text style={styles.iconText}>Избранное</Text>
           </TouchableOpacity>

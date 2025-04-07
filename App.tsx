@@ -1,16 +1,20 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { LogBox, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import MainTabNavigator from './main/navigation/MainTabNavigator';
 import AchievementsScreen from './main/screens/AchievementsScreen';
 import CreateWorkoutScreen from './main/screens/CreateWorkoutScreen';
 import EditProfileScreen from './main/screens/EditProfileScreen';
+import FavoriteLessonsScreen from './main/screens/FavoriteLessonsScreen';
+import LastLesson from './main/screens/LastLesson';
+import NewsDetailScreen from './main/screens/NewsDetailScreen.tsx';
+import NewsScreen from './main/screens/NewsScreen.tsx';
 import ProfileScreen from './main/screens/ProfileScreen';
 import SettingsScreen from './main/screens/SettingsScreen';
 import WorkoutDetailsScreen from './main/screens/WorkoutDetailsScreen';
@@ -28,11 +32,9 @@ import NotificationPage from './registration/noitfication.tsx';
 import GoalFormationScreen from './registration/program.tsx';
 import RegistPage from './registration/reg.tsx';
 import RestrictionsScreen from './registration/restrictions.tsx';
-import LastLesson from './main/screens/LastLesson';
 import SkillScreen from './registration/skill.tsx';
 import TimeScreen from './registration/time.tsx';
-import NewsDetailScreen from './main/screens/NewsDetailScreen.tsx';
-import NewsScreen from './main/screens/NewsScreen.tsx';
+
 // Игнорируем предупреждения о react-native-video
 LogBox.ignoreLogs([
   'ViewPropTypes will be removed',
@@ -105,6 +107,13 @@ const AppNavigator = () => {
               <Stack.Screen name="WorkoutDetails" component={WorkoutDetailsScreen} />
               <Stack.Screen name="NewsDetail" component={NewsDetailScreen} />
               <Stack.Screen name="NewsScreen" component={NewsScreen} />
+              <Stack.Screen 
+                name="FavoriteLessonsScreen" 
+                component={FavoriteLessonsScreen}
+                options={{
+                  headerShown: false
+                }}
+              />
             </Stack.Navigator>
             <StatusBar style="auto" />
           </NavigationContainer>
