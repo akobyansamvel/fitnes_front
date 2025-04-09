@@ -83,6 +83,7 @@ const AppNavigator = () => {
               }}
             >
               <Stack.Screen name="Hello" component={HelloScreen} />
+              <Stack.Screen name="Reg" component={RegistPage} />
               <Stack.Screen name="Regist" component={RegistPage} />
               <Stack.Screen name="Info" component={InfoScreen} />
               <Stack.Screen name="Time" component={TimeScreen} />
