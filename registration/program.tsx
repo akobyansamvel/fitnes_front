@@ -115,11 +115,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    fontWeight: 'bold',
     marginVertical: 20,
     textAlign: 'center',
     color: '#333',
-    fontFamily: 'Lora',
+    fontFamily: 'Lora-Bold',
 
   },
   imageContainer: {

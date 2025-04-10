@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
   continueButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
     fontFamily: 'Lora',
 
   },
@@ -279,6 +278,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     marginBottom: 5,
+    fontFamily: 'Lora',
+
   },
   bmiValue: {
     fontSize: 24,
@@ -287,6 +288,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   bmiCategory: {
+    fontFamily: 'Lora',
     fontSize: 16,
     color: '#666',
   },

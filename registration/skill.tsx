@@ -105,11 +105,10 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 22,
-    fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 40,
     textAlign: 'center',
-    fontFamily: 'Lora',
+    fontFamily: 'Lora-Bold',
 
   },
   optionsContainer: {

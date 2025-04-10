@@ -158,13 +158,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
     marginTop: 40,
     marginBottom: 40,
     lineHeight: 32,
-    fontFamily: 'Lora',
+    fontFamily: 'Lora-Bold',
 
   },
   optionsContainer: {

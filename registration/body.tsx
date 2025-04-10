@@ -111,7 +111,7 @@ const BodyAreasScreen = ({ navigation, route }: Props) => {
                 <Checkbox
                   value={isAreaSelected(area)}
                   onValueChange={() => {}}
-                  color={isAreaSelected(area) ? '#007AFF' : '#519076'}
+                  color={isAreaSelected(area) ? '#519076' : '#519076'}
                   style={styles.checkbox}
                   disabled={isAreaDisabled(area)}
                 />
@@ -187,6 +187,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   checkboxContainer: {
+    fontFamily: 'Lora',
+
     flex: 1,
     marginLeft: 20,
   },
@@ -200,11 +202,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     justifyContent: 'space-between',
+    fontFamily: 'Lora',
+
   },
   checkbox: {
     marginLeft: 8,
     width: 24,
     height: 24,
+    fontFamily: 'Lora',
+
     
   },
   checkboxLabel: {
@@ -232,7 +238,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
     fontFamily: 'Lora',
 
   },
@@ -241,6 +246,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
+    fontFamily: 'Lora',
+
   },
 });
 

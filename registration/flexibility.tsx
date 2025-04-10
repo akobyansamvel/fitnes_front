@@ -159,11 +159,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 20,
     color: '#333',
-    fontFamily: 'Lora',
+    fontFamily: 'Lora-Bold',
 
   },
   progressContainer: {

@@ -74,7 +74,7 @@ const MotivationScreen = ({ navigation, route }: Props) => {
               <Checkbox
                 value={selectedMotivations.includes(motivation)}
                 onValueChange={() => toggleMotivation(motivation)}
-                color={selectedMotivations.includes(motivation) ? '#007AFF' : '#519076'}
+                color={selectedMotivations.includes(motivation) ? '#519076' : '#519076'}
                 style={styles.checkbox}
               />
               <Text style={styles.checkboxLabel}>{motivation}</Text>

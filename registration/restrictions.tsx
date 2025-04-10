@@ -113,10 +113,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
-    fontFamily: 'Lora',
+    fontFamily: 'Lora-Bold',
 
   },
   progressContainer: {
@@ -138,11 +137,10 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 24,
-    fontWeight: 'bold',
     textAlign: 'center',
     color: '#333',
     marginTop: 40,
-    fontFamily: 'Lora',
+    fontFamily: 'Lora-Bold',
 
   },
   optionsContainer: {
