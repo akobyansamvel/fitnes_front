@@ -98,6 +98,8 @@ const styles = StyleSheet.create({
     padding: 16, 
     backgroundColor: '#ECE9E4',
     justifyContent: 'space-between'
+    fontFamily: 'Lora',
+
   },
   contentContainer: {
     flex: 1
@@ -107,14 +109,18 @@ const styles = StyleSheet.create({
     marginBottom: 20, 
     marginTop: 20, 
     textAlign: 'center', 
-    color: 'rgba(0, 0, 0, 0.6)' 
+    color: 'rgba(0, 0, 0, 0.6)',
+    fontFamily: 'Lora',
+
   },
   additionalText: { 
     fontSize: 20, 
     marginVertical: 20, 
     textAlign: 'center', 
     color: '#555', 
-    fontWeight: 'bold' 
+    fontWeight: 'bold' ,
+    fontFamily: 'Lora',
+
   },
   image: { 
     width: '100%', 
@@ -138,6 +144,8 @@ const styles = StyleSheet.create({
     color: 'black', 
     fontSize: 16, 
     fontWeight: 'bold', 
+    fontFamily: 'Lora',
+
     textAlign: 'left' 
   },
   skipButton: { 
@@ -148,6 +156,8 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.5)', 
     fontSize: 16, 
     textAlign: 'center',
+    fontFamily: 'Lora',
+
     textDecorationLine: 'underline'
   },
 });

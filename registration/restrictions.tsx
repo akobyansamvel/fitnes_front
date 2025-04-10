@@ -108,12 +108,16 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#ECE9E4',
     justifyContent: 'space-between',
+    fontFamily: 'Lora',
+
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    fontFamily: 'Lora',
+
   },
   progressContainer: {
     flexDirection: 'row',
@@ -138,6 +142,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333',
     marginTop: 40,
+    fontFamily: 'Lora',
+
   },
   optionsContainer: {
     flex: 1,
@@ -161,10 +167,14 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   optionText: {
+    fontFamily: 'Lora',
+
     fontSize: 16,
   },
   disabledOptionText: {
     color: '#999',
+    fontFamily: 'Lora',
+
   },
   continueButton: {
     backgroundColor: '#4D4D4D',
@@ -180,6 +190,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Lora',
+
   },
 });
 

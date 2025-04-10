@@ -137,6 +137,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#ECE9E4',
+    fontFamily: 'Lora',
+
   },
   progressContainer: {
     flexDirection: 'row',
@@ -160,12 +162,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    fontFamily: 'Lora',
+
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
     marginBottom: 30,
     textAlign: 'center',
+    fontFamily: 'Lora',
+
   },
   contentContainer: {
     flexDirection: 'row',
@@ -207,6 +213,8 @@ const styles = StyleSheet.create({
   },
   disabledText: {
     color: '#AAA',
+    fontFamily: 'Lora',
+
   },
   button: {
     backgroundColor: '#4D4D4D',
@@ -214,6 +222,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 20,
+    fontFamily: 'Lora',
+
   },
   disabledButton: {
     backgroundColor: '#4D4D4D',
@@ -223,6 +233,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Lora',
+
   },
   touchableArea: {
     flexDirection: 'row',

@@ -83,6 +83,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#ECE9E4',
+    fontFamily: 'Lora',
+
   },
   progressContainer: {
     flexDirection: 'row',
@@ -107,6 +109,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 40,
     textAlign: 'center',
+    fontFamily: 'Lora',
+
   },
   optionsContainer: {
     flex: 1,
@@ -124,6 +128,8 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 16,
     color: '#333',
+    fontFamily: 'Lora',
+
   },
  
   selectedOptionContainer: {
@@ -145,6 +151,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Lora',
+
   },
 });
 

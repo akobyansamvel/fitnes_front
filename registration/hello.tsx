@@ -123,6 +123,8 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'flex-start',
     backgroundColor: '#ECE9E4',
+    fontFamily: 'Lora',
+
   },
   logo: {
     width: '100%',
@@ -139,6 +141,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lora',
     marginBottom: 30,
     textAlign: 'center',
+    
   },
   input: {
     borderWidth: 1,

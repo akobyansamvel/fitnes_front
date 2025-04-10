@@ -131,6 +131,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ECE9E4',
+    fontFamily: 'Lora',
+
   },
   progressContainer: {
     flexDirection: 'row',
@@ -162,6 +164,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 40,
     lineHeight: 32,
+    fontFamily: 'Lora',
+
   },
   optionsContainer: {
     marginTop: 40,
@@ -183,10 +187,14 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'left',
     paddingLeft: 10,
+    fontFamily: 'Lora',
+
   },
   selectedOptionText: {
     color: '#FFFFFF',
     fontWeight: '500',
+    fontFamily: 'Lora',
+
   },
   continueButton: {
     backgroundColor: '#4D4D4D',
@@ -202,6 +210,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Lora',
+
   },
 });
 

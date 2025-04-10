@@ -187,12 +187,16 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#ECE9E4',
     justifyContent: 'center',
+    fontFamily: 'Lora',
+
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 20,
+    fontFamily: 'Lora',
+
     color: '#333',
   },
   progressContainer: {
@@ -228,6 +232,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: '#333',
     fontWeight: '500',
+    fontFamily: 'Lora',
+
   },
   input: {
     borderWidth: 1,
@@ -236,6 +242,8 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     backgroundColor: '#FAFAFA',
+    fontFamily: 'Lora',
+
   },
   continueButton: {
     backgroundColor: '#4D4D4D',
@@ -251,10 +259,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Lora',
+
   },
   slider: {
     width: '100%',
     height: 40,
+    fontFamily: 'Lora',
+
   },
   bmiContainer: {
     backgroundColor: '#FAFAFA',

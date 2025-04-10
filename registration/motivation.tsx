@@ -102,6 +102,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#ECE9E4',
+    fontFamily: 'Lora',
+
   },
   progressContainer: {
     flexDirection: 'row',
@@ -127,12 +129,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     marginTop: 20,
+    fontFamily: 'Lora',
+
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
     marginBottom: 10,
     textAlign: 'center',
+    fontFamily: 'Lora',
+
   },
   motivationsContainer: {
     flex: 1,
@@ -178,6 +184,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Lora',
+
   },
   touchableArea: {
     flexDirection: 'row',
