@@ -1,10 +1,12 @@
 import { Feather } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { LineChart } from 'react-native-chart-kit';
 import { Circle as SvgCircle, Svg as SvgComponent } from 'react-native-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import IndividualIcon from '../../assets/individual.svg';
 import ClockIcon from '../../assets/clock.svg';
 import HeartIcon from '../../assets/heart.svg';
@@ -79,7 +81,7 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
   });
   const [isModalVisible, setModalVisible] = useState(false);
   const [newWeight, setNewWeight] = useState('');
-  const [avatarError, setAvatarError] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   
   const statsData = {
     statworkouts: { all: 49, week: 6, month: 14, year: 48 },
@@ -92,6 +94,25 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
     calories: { all: 174, week: 174, month: 174, year: 174 },
     minutes: { all: 15, week: 15, month: 15, year: 15 }
   });
+
+  const loadProfileImage = async () => {
+    try {
+      const savedImage = await AsyncStorage.getItem('profileImage');
+      if (savedImage) {
+        setProfileImage(savedImage);
+      } else {
+        setProfileImage(null);
+      }
+    } catch (error) {
+      console.error('Error loading profile image:', error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadProfileImage();
+    }, [])
+  );
 
   const calculateDifference = () => {
     return weights.current - weights.start;
@@ -207,16 +228,14 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Image source={require('../../assets/background.png')} style={styles.backgroundImage} />
-        </View>
-        <View style={styles.profileSection}>
-          <Image 
-            source={avatarError ? require('../../assets/default-avatar.png') : { uri: 'https://via.placeholder.com/100' }}
-            style={styles.avatar}
-            onError={() => setAvatarError(true)}
-          />
-        </View>
-        
-    
+      </View>
+      <View style={styles.profileSection}>
+        <Image 
+          source={profileImage ? { uri: profileImage } : require('../../assets/default-avatar.png')}
+          style={styles.avatar}
+        />
+      </View>
+      
       <View style={styles.contentContainer}>
       <View style={styles.iconsContainer}>
           <TouchableOpacity 
@@ -422,15 +441,20 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   profileSection: {
-    padding: 15,
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: 15,
   },
   avatar: {
     width: 100,
     height: 100,
-    borderRadius: 50,
+    borderRadius: 20,
+    borderWidth: 3,
+    borderColor: '#fff',
+  
   },
+
+  
   iconsContainer: {
     marginTop: 0,
     marginBottom: 10,
