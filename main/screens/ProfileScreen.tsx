@@ -1,16 +1,16 @@
-import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { LineChart } from 'react-native-chart-kit';
 import { Circle as SvgCircle, Svg as SvgComponent } from 'react-native-svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-import IndividualIcon from '../../assets/individual.svg';
 import ClockIcon from '../../assets/clock.svg';
 import HeartIcon from '../../assets/heart.svg';
+import IndividualIcon from '../../assets/individual.svg';
 import SettingsIcon from '../../assets/settings.svg';
+import { getLessonHistory, SavedLesson } from '../storage/lessonHistory';
 
 type RootStackParamList = {
   Achievements: { date: string };
@@ -89,11 +89,88 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
     statcalories: { all: 8820, week: 1080, month: 2520, year: 8640 }
   };
 
-  const [stats] = useState({
-    workouts: { all: 1, week: 1, month: 1, year: 1 },
-    calories: { all: 174, week: 174, month: 174, year: 174 },
-    minutes: { all: 15, week: 15, month: 15, year: 15 }
+  const [stats, setStats] = useState({
+    workouts: { all: 0, week: 0, month: 0, year: 0 },
+    calories: { all: 0, week: 0, month: 0, year: 0 },
+    minutes: { all: 0, week: 0, month: 0, year: 0 }
   });
+
+  const updateStats = async () => {
+    try {
+      const history = await getLessonHistory();
+      const now = new Date();
+      const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      const oneYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+
+      const totalWorkouts = history.length;
+      const weekWorkouts = history.filter(lesson => new Date(lesson.completedAt) >= oneWeekAgo).length;
+      const monthWorkouts = history.filter(lesson => new Date(lesson.completedAt) >= oneMonthAgo).length;
+      const yearWorkouts = history.filter(lesson => new Date(lesson.completedAt) >= oneYearAgo).length;
+
+      const totalMinutes = history.reduce((sum: number, lesson: SavedLesson) => sum + lesson.duration_minutes, 0);
+      const weekMinutes = history
+        .filter(lesson => new Date(lesson.completedAt) >= oneWeekAgo)
+        .reduce((sum: number, lesson: SavedLesson) => sum + lesson.duration_minutes, 0);
+      const monthMinutes = history
+        .filter(lesson => new Date(lesson.completedAt) >= oneMonthAgo)
+        .reduce((sum: number, lesson: SavedLesson) => sum + lesson.duration_minutes, 0);
+      const yearMinutes = history
+        .filter(lesson => new Date(lesson.completedAt) >= oneYearAgo)
+        .reduce((sum: number, lesson: SavedLesson) => sum + lesson.duration_minutes, 0);
+
+      const totalCalories = history.reduce((sum: number, lesson: SavedLesson) => sum + lesson.calories, 0);
+      const weekCalories = history
+        .filter(lesson => new Date(lesson.completedAt) >= oneWeekAgo)
+        .reduce((sum: number, lesson: SavedLesson) => sum + lesson.calories, 0);
+      const monthCalories = history
+        .filter(lesson => new Date(lesson.completedAt) >= oneMonthAgo)
+        .reduce((sum: number, lesson: SavedLesson) => sum + lesson.calories, 0);
+      const yearCalories = history
+        .filter(lesson => new Date(lesson.completedAt) >= oneYearAgo)
+        .reduce((sum: number, lesson: SavedLesson) => sum + lesson.calories, 0);
+
+      setStats({
+        workouts: { 
+          all: totalWorkouts,
+          week: weekWorkouts,
+          month: monthWorkouts,
+          year: yearWorkouts
+        },
+        calories: { 
+          all: totalCalories,
+          week: weekCalories,
+          month: monthCalories,
+          year: yearCalories
+        },
+        minutes: { 
+          all: totalMinutes,
+          week: weekMinutes,
+          month: monthMinutes,
+          year: yearMinutes
+        }
+      });
+    } catch (error) {
+      console.error('Error updating stats:', error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      const checkAndUpdateStats = async () => {
+        const shouldUpdate = await AsyncStorage.getItem('@shouldUpdateStats');
+        if (shouldUpdate === 'true') {
+          await AsyncStorage.removeItem('@shouldUpdateStats');
+          await updateStats();
+        } else {
+          await updateStats();
+        }
+      };
+
+      loadProfileImage();
+      checkAndUpdateStats();
+    }, [])
+  );
 
   const loadProfileImage = async () => {
     try {
@@ -107,12 +184,6 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
       console.error('Error loading profile image:', error);
     }
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      loadProfileImage();
-    }, [])
-  );
 
   const calculateDifference = () => {
     return weights.current - weights.start;
