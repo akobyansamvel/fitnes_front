@@ -357,28 +357,30 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
           />
         </View>
 
-        {/* Табы периодов */}
-        <View style={styles.tabContainer}>
-          {renderTabButton('Все', 'all')}
-          {renderTabButton('Неделя', 'week')}
-          {renderTabButton('Месяц', 'month')}
-          {renderTabButton('Год', 'year')}
-          
+        {/* Табы периодов и статистика */}
+        <View style={styles.tabsAndStatsWrapper}>
+          <View style={styles.tabContainer}>
+            {renderTabButton('Все', 'all')}
+            {renderTabButton('Неделя', 'week')}
+            {renderTabButton('Месяц', 'month')}
+            {renderTabButton('Год', 'year')}
+          </View>
+          <View style={styles.statsContainer}>
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>{statsData.statworkouts[activeTab]}</Text>
+              <Text style={styles.statLabel}>Тренировка</Text>
+            </View>
+            <View style={styles.statItem1}>
+              <Text style={styles.statValue}>{statsData.statminutes[activeTab]}</Text>
+              <Text style={styles.statLabel}>Минут</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={styles.statValue}>{statsData.statcalories[activeTab]}</Text>
+              <Text style={styles.statLabel}>Калории</Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>{statsData.statworkouts[activeTab]}</Text>
-            <Text style={styles.statLabel}>Тренировка</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>{statsData.statminutes[activeTab]}</Text>
-            <Text style={styles.statLabel}>Минут</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>{statsData.statcalories[activeTab]}</Text>
-            <Text style={styles.statLabel}>Калории</Text>
-          </View>
-        </View>
+
         {/* Календарь */}
         <Calendar
           style={styles.calendar}
@@ -545,18 +547,38 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontFamily: 'Lora',
   },
-  statsContainer: {
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
+  tabsAndStatsWrapper: {
+    backgroundColor: '#C9C9C9',
+    borderRadius: 16,
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: 'white',
+    paddingVertical: 0,
+    backgroundColor: '#C9C9C9',
+    borderBottomColor: '#f0f0f0',
+    height: 40,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#ffffff',
     paddingVertical: 20,
-    borderTopWidth: 1,
-    borderTopColor: '#ECE9E4',
+ 
   },
   statItem: {
+    paddingHorizontal: 10,
     alignItems: 'center',
+  },
+  statItem1: {
+    paddingHorizontal: 25,
+    alignItems: 'center',
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderLeftColor: '#ACACAC',
+    borderRightColor: '#ACACAC',
   },
   statValue: {
     fontSize: 24,
@@ -579,37 +601,6 @@ const styles = StyleSheet.create({
   progressItem: {
     alignItems: 'center',
     marginHorizontal: 10,
-  },
-  tabContainer: {
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 16,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  tabButton: {
-    borderWidth: 0.3,
-    borderColor: 'black',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-  },
-  activeTabButton: {
-    backgroundColor: 'white',
-  },
-  tabText: {
-    color: 'black',
-    fontSize: 14,
-    fontFamily: 'Lora',
-  },
-  activeTabText: {
-    color: 'black',
-    fontFamily: 'Lora',
   },
   calendar: {
     marginVertical: 16,
@@ -728,6 +719,30 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+    fontFamily: 'Lora',
+  },
+  tabButton: {
+    flex: 1,
+    borderTopEndRadius: 15,
+    borderTopStartRadius: 15,
+    
+    
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#C9C9C9',
+  },
+  activeTabButton: {
+    backgroundColor: 'white',
+  },
+  tabText: {
+    color: 'black',
+    fontSize: 14,
+    fontFamily: 'Lora',
+  },
+  activeTabText: {
+    color: 'black',
     fontFamily: 'Lora',
   },
 });
