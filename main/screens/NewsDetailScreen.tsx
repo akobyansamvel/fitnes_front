@@ -61,8 +61,7 @@ const NewsDetailScreen = () => {
       <View style={styles.imageContainer}>
         <TouchableOpacity 
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+          onPress={() => navigation.navigate('NewsScreen')}        >
           <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
         </TouchableOpacity>
         <Image 
@@ -75,14 +74,6 @@ const NewsDetailScreen = () => {
           }}
         />
         <View style={styles.overlay}>
-          <View style={styles.tagContainer}>
-            {newsDetail.tags.map(tag => (
-              <View key={tag.id} style={styles.tag}>
-                <Text style={styles.tagText}>#{tag.name}</Text>
-              </View>
-            ))}
-          </View>
-          <Text style={styles.title}>{newsDetail.title}</Text>
         </View>
       </View>
       <View style={styles.content}>

@@ -2,7 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import { MainTabParamList } from '../navigationTypes';
+
 
 type HomeScreenNavigationProp = StackNavigationProp<MainTabParamList, 'Home'>;
 
@@ -334,11 +336,17 @@ const HomeScreen = () => {
               </View>
             </View>
             <TouchableOpacity 
-              style={styles.playButton}
-              onPress={handleWorkoutPress}
-            >
-              <Text style={styles.playButtonText}>▶</Text>
-            </TouchableOpacity>
+  style={styles.playButton}
+  onPress={handleWorkoutPress}
+>
+  <Svg width="19" height="23" viewBox="0 0 21 25" fill="none">
+    <Path 
+      d="M20.5 13.366C21.1667 12.9811 21.1667 12.0189 20.5 11.634L1.75 0.808657C1.08333 0.423757 0.25 0.904881 0.25 1.67468V23.3253C0.25 24.0951 1.08333 24.5762 1.75 24.1913L20.5 13.366Z" 
+      fill="#F7F7F7" 
+    />
+  </Svg>
+</TouchableOpacity>
+
           </View>
         </ImageBackground>
       </TouchableOpacity>

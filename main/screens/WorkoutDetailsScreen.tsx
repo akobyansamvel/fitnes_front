@@ -12,6 +12,12 @@ import {
 } from 'react-native';
 import { RootStackParamList } from '../navigationTypes';
 
+type Tag = {
+  id: number;
+  name: string;
+  category: string;
+};
+
 type Exercise = {
   name: string;
   duration: number;
@@ -25,6 +31,7 @@ type Workout = {
   duration: string;
   calories: number;
   exercises: Exercise[];
+  tags: Tag[];
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'WorkoutDetails'>;
@@ -48,6 +55,23 @@ const WorkoutDetailsScreen = ({ route, navigation }: Props) => {
         videoUrl: 'http://192.168.0.176:8000/media/lessons/videos/day1.mp4',
       }
     ],
+    tags: [
+      {
+        id: 5,
+        name: "Растяжка",
+        category: "priority"
+      },
+      {
+        id: 6,
+        name: "Баланс",
+        category: "priority"
+      },
+      {
+        id: 12,
+        name: "Низкая",
+        category: "intensity"
+      }
+    ]
   };
 
   const formatTime = (seconds: number) => {
@@ -85,11 +109,24 @@ const WorkoutDetailsScreen = ({ route, navigation }: Props) => {
       </ImageBackground>
 
       <ScrollView style={styles.content}>
-        <Text style={styles.sectionTitle}>Ежедневная тренировка
-        </Text>
+        {/* Добавленные теги */}
+        <View style={styles.tagsContainer}>
+          {workout.tags.map((tag) => (
+            <View 
+              key={tag.id} 
+              style={[
+                styles.tag, 
+                tag.category === 'intensity' ? styles.intensityTag : styles.priorityTag
+              ]}
+            >
+              <Text style={styles.tagText}>{tag.name}</Text>
+            </View>
+          ))}
+        </View>
+
+        <Text style={styles.sectionTitle}>Ежедневная тренировка</Text>
         {workout.exercises.map((exercise: Exercise, index: number) => (
           <View key={index}>
-        
             {exercise.videoUrl && (
               <Video
                 ref={videoRef}
@@ -153,6 +190,28 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 20,
+  },
+  tag: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  priorityTag: {
+    backgroundColor: '#E8F5E9',
+  },
+  intensityTag: {
+    backgroundColor: '#E3F2FD',
+  },
+  tagText: {
+    fontSize: 14,
+    fontFamily: 'Lora',
   },
   sectionTitle: {
     fontSize: 20,

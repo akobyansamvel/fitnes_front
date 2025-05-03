@@ -5,15 +5,15 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { ResizeMode, Video } from 'expo-av';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    BackHandler,
-    Dimensions,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  BackHandler,
+  Dimensions,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import ExitLessonModal from '../components/ExitLessonModal';
 import { MainTabParamList } from '../navigationTypes';
@@ -213,7 +213,19 @@ const LessonScreen = () => {
 
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{lesson.title}</Text>
-        
+        <View style={styles.tagsContainer}>
+          {lesson.tags?.map(tag => (
+            <View 
+              key={tag.id} 
+              style={[
+                styles.tag,
+                tag.category === 'intensity' ? styles.intensityTag : styles.priorityTag
+              ]}
+            >
+              <Text style={styles.tagText}>{tag.name}</Text>
+            </View>
+          ))}
+        </View>
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
             <Ionicons name="time-outline" size={20} color="#666" />
@@ -253,6 +265,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: Platform.OS === 'ios' ? 60 : 20,
     paddingBottom: 16,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 16,
+  },
+  tag: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  priorityTag: {
+    backgroundColor: '#E8F5E9',
+  },
+  intensityTag: {
+    backgroundColor: '#E3F2FD',
+  },
+  tagText: {
+    fontSize: 14,
+    fontFamily: 'Lora',
+    color: '#333',
   },
   backButton: {
     padding: 8,

@@ -1,10 +1,10 @@
 import { Feather } from '@expo/vector-icons';
-import React, { useState, useEffect, useCallback } from 'react';
-import { Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, Image, ImageBackground, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type ProfileData = {
   name: string;
@@ -26,7 +26,7 @@ const EditProfileScreen = ({ navigation }: { navigation: any }) => {
     weight: 52,
     mainGoal: 'Изучение основы йоги',
     focusArea: 'Все тело',
-    restrictions: 'Нет ограничений',
+    restrictions: 'Сердечно-сосудистые заболевания',
   });
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -98,7 +98,7 @@ const EditProfileScreen = ({ navigation }: { navigation: any }) => {
     "Нет ограничений",
     "Боли в спине",
     "Проблемы с коленями",
-    "Чувствительность в суставах",
+    "Сердечно-сосудистые заболевания",
     "Беременность",
     "Послеродовое состояние"
   ];
