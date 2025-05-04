@@ -100,7 +100,6 @@ const HomeScreen = () => {
 
   useEffect(() => {
     fetchCategories();
-    // Выбираем тренировку для первого дня
     setCurrentWorkout(DAILY_WORKOUTS[0]);
   }, []);
 
@@ -216,7 +215,6 @@ const HomeScreen = () => {
       const data = await response.json();
       console.log('Received lessons data:', JSON.stringify(data, null, 2));
       
-      // Проверяем каждый урок
       data.forEach((lesson: any, index: number) => {
         console.log(`Lesson ${index + 1}:`, {
           id: lesson.id,
@@ -225,7 +223,6 @@ const HomeScreen = () => {
           preview_image: lesson.preview_image
         });
         
-        // Проверяем доступность видео
         fetch(lesson.video_file)
           .then(response => {
             console.log(`Video ${index + 1} status:`, response.status);
@@ -235,7 +232,6 @@ const HomeScreen = () => {
             console.error(`Error checking video ${index + 1}:`, error);
           });
 
-        // Проверяем доступность превью
         const encodedPreviewUrl = encodeURI(lesson.preview_image);
         fetch(encodedPreviewUrl)
           .then(response => {
@@ -274,7 +270,6 @@ const HomeScreen = () => {
   const handlePreviousDay = () => {
     if (currentDay > 1) {
       setCurrentDay(prev => prev - 1);
-      // При переходе на предыдущий день меняем тренировку
       setCurrentWorkout(DAILY_WORKOUTS[(currentDay - 2) % DAILY_WORKOUTS.length]);
     }
   };
@@ -282,7 +277,6 @@ const HomeScreen = () => {
   const handleNextDay = () => {
     if (currentDay < 30) {
       setCurrentDay(prev => prev + 1);
-      // При переходе на следующий день меняем тренировку
       setCurrentWorkout(DAILY_WORKOUTS[currentDay % DAILY_WORKOUTS.length]);
     }
   };

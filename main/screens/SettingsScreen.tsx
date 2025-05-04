@@ -13,7 +13,6 @@ const SettingsScreen = ({ navigation }: { navigation: any }) => {
   };
 
   const confirmDelete = () => {
-    // Здесь будет логика удаления аккаунта
     setShowDeleteModal(false);
   };
 

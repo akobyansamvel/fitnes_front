@@ -33,7 +33,6 @@ const TimeScreen = () => {
       try {
         setLoading(true);
         
-        // Подготавливаем данные для сохранения локально
         if (!name) {
           Alert.alert('Ошибка', 'Имя пользователя обязательно');
           return;
@@ -49,13 +48,10 @@ const TimeScreen = () => {
           height: height && !isNaN(Number(height)) ? parseInt(height) : undefined,
           weight: weight && !isNaN(Number(weight)) ? parseInt(weight) : undefined,
           workout_duration: selectedTime,
-          // Другие поля будут добавлены позже
         };
         
-        // Сохраняем данные пользователя локально
         await saveUserData(userData);
         
-        // Переходим на следующий экран без отправки данных на сервер
         navigation.navigate('GoalFormation', {
           ...formData,
           gender,
@@ -76,7 +72,6 @@ const TimeScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Progress bar */}
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, styles.completedProgressBar]} />
         <View style={[styles.progressBar, styles.completedProgressBar]} />

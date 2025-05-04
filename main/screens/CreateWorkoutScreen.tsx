@@ -47,7 +47,7 @@ const SAMPLE_VIDEOS: WorkoutVideo[] = [
   },
   {
     id: '3',
-    title: 'Пурвоттанасана - поза вытяжения восточной стороны тела',
+    title: 'Пурвоттанасана - поза вытяжения тела',
     description: 'Пурвоттанасана - поза вытяжения восточной стороны тела',
     duration: 20,
     calories: 40,
@@ -105,12 +105,10 @@ const CreateWorkoutScreen = () => {
   });
   const [savedWorkouts, setSavedWorkouts] = useState<Array<{ name: string; videos: WorkoutVideo[]; settings: WorkoutSettings }>>([]);
 
-  // Загрузка сохраненных тренировок при запуске
   useEffect(() => {
     loadSavedWorkouts();
   }, []);
 
-  // Загрузка тренировок из AsyncStorage
   const loadSavedWorkouts = async () => {
     try {
       const savedWorkoutsJson = await AsyncStorage.getItem('savedWorkouts');
@@ -122,7 +120,6 @@ const CreateWorkoutScreen = () => {
     }
   };
 
-  // Сохранение тренировок в AsyncStorage
   const saveWorkoutsToStorage = async (workouts: Array<{ name: string; videos: WorkoutVideo[]; settings: WorkoutSettings }>) => {
     try {
       await AsyncStorage.setItem('savedWorkouts', JSON.stringify(workouts));
@@ -210,10 +207,13 @@ const CreateWorkoutScreen = () => {
           >
             <Image source={video.thumbnailUrl} style={styles.thumbnail} />
             <View style={styles.videoInfo}>
-              <Text style={styles.videoTitle}>{video.title}</Text>
+            <Text style={styles.videoTitle}>{video.title}</Text>
+            <View style={styles.videoMetaRow}>
               <Text style={styles.videoDuration}>{Math.floor(video.duration)} мин</Text>
               <Text style={styles.videoCalories}>{video.calories} ккал</Text>
             </View>
+          </View>
+
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -235,27 +235,37 @@ const CreateWorkoutScreen = () => {
         onDragEnd={({ data }) => setSelectedVideos(data)}
         keyExtractor={(item: WorkoutVideo) => item.id}
         renderItem={({ item, drag, isActive }: RenderItemParams<WorkoutVideo>) => (
-          <ScaleDecorator>
-            <TouchableOpacity
-              style={[styles.videoCard, isActive && styles.videoCardDragging]}
-              onLongPress={drag}
-              delayLongPress={200}
-            >
+            <ScaleDecorator>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 16 }}>
               <TouchableOpacity
-                style={styles.removeButton}
-                onPress={() => setSelectedVideos(selectedVideos.filter(v => v.id !== item.id))}
-              >
-                <Feather name="minus-circle" size={24} color="#ff4444" />
-              </TouchableOpacity>
-              <Image source={item.thumbnailUrl} style={styles.thumbnail} />
-              <View style={styles.videoInfo}>
-                <Text style={styles.videoTitle}>{item.title}</Text>
-              </View>
-              <View style={styles.dragHandle}>
-                <Feather name="menu" size={24} color="#666" />
-              </View>
-            </TouchableOpacity>
-          </ScaleDecorator>
+        style={styles.removeButton}
+        onPress={() =>
+          setSelectedVideos(selectedVideos.filter(v => v.id !== item.id))
+        }
+      >
+  <View style={styles.circle}>
+    <View style={styles.minus} />
+  </View>
+</TouchableOpacity>
+
+
+
+          <TouchableOpacity
+            style={[styles.videoCard, isActive && styles.videoCardDragging]}
+            onLongPress={drag}
+            delayLongPress={200}
+          >
+            <Image source={item.thumbnailUrl} style={styles.thumbnail} />
+            <View style={styles.videoInfo}>
+              <Text style={styles.videoTitle}>{item.title}</Text>
+            </View>
+            <View style={styles.dragHandle}>
+              <Feather name="menu" size={24} color="#666" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScaleDecorator>
+
         )}
       />
       <TouchableOpacity
@@ -397,6 +407,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  videoMetaRow: {
+    flexDirection: 'row',
+    marginTop: 4,
+    gap: 8, 
+  },
   plusButtonText: {
     opacity: 1,
     fontSize: 18,
@@ -416,10 +431,10 @@ const styles = StyleSheet.create({
   },
   videoCard: {
     flexDirection: 'row',
-    padding: 12,
     alignItems: 'center',
     backgroundColor: '#fff',
     marginHorizontal: 16,
+    marginRight: 30,
     marginVertical: 8,
     borderRadius: 8,
     elevation: 2,
@@ -473,6 +488,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999',
     marginTop: 4,
+    marginBottom: 7,
     fontFamily: 'Lora',
   },
   continueButton: {
@@ -492,8 +508,27 @@ const styles = StyleSheet.create({
     fontFamily: 'Lora',
   },
   removeButton: {
-    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  
+  circle: {
+    width: 30,
+    height: 30,
+    borderRadius: 18,
+    backgroundColor: '#4D4D4D',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  minus: {
+    width: 16,
+    height: 2,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 1,
+  },
+  
+  
   settingsContainer: {
     padding: 16,
   },
@@ -553,6 +588,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lora',
   },
   workoutsContainer: {
+    
     flex: 1,
     width: '100%',
     paddingHorizontal: 16,

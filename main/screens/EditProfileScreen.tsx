@@ -26,7 +26,7 @@ const EditProfileScreen = ({ navigation }: { navigation: any }) => {
     weight: 52,
     mainGoal: 'Изучение основы йоги',
     focusArea: 'Все тело',
-    restrictions: 'Сердечно-сосудистые заболевания',
+    restrictions: 'Сердечно-сосудист...',
   });
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -95,10 +95,10 @@ const EditProfileScreen = ({ navigation }: { navigation: any }) => {
   ];
 
   const restrictions = [
-    "Нет ограничений",
+    "Сердечно-сосудистые заболевания",
     "Боли в спине",
     "Проблемы с коленями",
-    "Сердечно-сосудистые заболевания",
+    "Чувствительность в суставах",
     "Беременность",
     "Послеродовое состояние"
   ];

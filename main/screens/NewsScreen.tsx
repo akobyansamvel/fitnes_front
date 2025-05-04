@@ -29,14 +29,11 @@ const NewsScreen = () => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const navigation = useNavigation<NativeStackNavigationProp<MainTabParamList>>();
 
-  // Функция для обработки URL изображений
   const processImageUrl = (url: string) => {
     if (!url) return '';
-    // Если URL уже полный, возвращаем его как есть
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
-    // Иначе добавляем базовый URL бэкенда
     return `http://192.168.0.176:8000${url}`;
   };
 
@@ -45,14 +42,11 @@ const NewsScreen = () => {
       const response = await fetch('http://192.168.0.176:8000/api/news/');
       const newData = await response.json();
       
-      // Сравниваем новые данные со старыми
       setNews(prevNews => {
-        // Если это первая загрузка, просто устанавливаем данные
         if (prevNews.length === 0) {
           return newData;
         }
 
-        // Проверяем, есть ли удаленные новости
         const deletedNewsIds = prevNews
           .filter(oldItem => !newData.some((newItem: NewsItem) => newItem.id === oldItem.id))
           .map(item => item.id);
@@ -72,13 +66,10 @@ const NewsScreen = () => {
   };
 
   useEffect(() => {
-    // Первоначальная загрузка
     fetchNews();
 
-    // Установка интервала для обновления
     const intervalId = setInterval(fetchNews, 5000); // Обновление каждые 30 секунд
 
-    // Очистка интервала при размонтировании компонента
     return () => clearInterval(intervalId);
   }, []);
 
@@ -253,7 +244,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lora',
   },
   listContainer: {
-    padding: 16,
+    paddingTop: 16
   },
   newsCard: {
     backgroundColor: '#fff',
@@ -272,8 +263,7 @@ const styles = StyleSheet.create({
   },
   newsImage: {
     width: '100%',
-    height: 250,
-    borderRadius: 12,
+    height: 300,
   },
  
 

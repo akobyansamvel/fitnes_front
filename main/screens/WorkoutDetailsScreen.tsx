@@ -41,7 +41,6 @@ const WorkoutDetailsScreen = ({ route, navigation }: Props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<Video>(null);
 
-  // Временные данные для демонстрации
   const workout: Workout = {
     id: workoutId,
     title: 'РАСТЯЖКА ДЛЯ\nТЕЛА И УМА',
@@ -109,7 +108,6 @@ const WorkoutDetailsScreen = ({ route, navigation }: Props) => {
       </ImageBackground>
 
       <ScrollView style={styles.content}>
-        {/* Добавленные теги */}
         <View style={styles.tagsContainer}>
           {workout.tags.map((tag) => (
             <View 
