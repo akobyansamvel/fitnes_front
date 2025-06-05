@@ -34,7 +34,6 @@ const WorkoutDetailsScreen = ({ route, navigation }: Props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<Video>(null);
 
-  // Временные данные для демонстрации
   const workout: Workout = {
     id: workoutId,
     title: 'РАСТЯЖКА ДЛЯ\nТЕЛА И УМА',
